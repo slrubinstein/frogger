@@ -84,12 +84,6 @@
       canvas.height = h;
       game.width = w;
       canvas.width = w;
-
-      gctx.fillStyle="#FFFFFF";
-      // start line
-      gctx.fillRect(0, h * 4 / 5, 100, 100);
-      // stop line
-      gctx.fillRect(0, h * 2 / 5, 100, 100);
     }
 
     init = () => {
@@ -151,6 +145,13 @@
       gctx.clearRect(0,0,w,h);
       gctx.drawImage(frog, frogX, frogY, 40, 40)
       gctx.fillRect(0,0,40,40);
+
+      gctx.fillStyle="lime";
+      // start line
+      gctx.fillRect(0, h * 7 / 8, w, 10);
+      // stop line
+      gctx.fillRect(0, h * 2 / 5, w, 10);
+
       gameHasChanged = false;
     }
 
