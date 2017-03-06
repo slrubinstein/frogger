@@ -57,9 +57,6 @@
         colorThief = new ColorThief();
 
     let w = window.innerWidth, h = window.innerHeight;
-
-    window.addEventListener('resize', resize);
-
     let frogX = w/2 - 25, frogY = h - 50;
     let color;
     let gameHasChanged = true;
@@ -73,8 +70,6 @@
       gameHasChanged = true;
       e.preventDefault();
     };
-
-    window.addEventListener('resize', resize);
 
     resize = () => {
       w = window.innerWidth;
@@ -90,8 +85,6 @@
       // stop line
       gctx.fillRect(0, h * 2 / 5, 100, 100);
     }
-
-    video.addEventListener('play', init, false);
 
     init = () => {
       resize();
@@ -140,6 +133,8 @@
       gameHasChanged = false;
     }
 
+    window.addEventListener('resize', resize);
+    video.addEventListener('play', init, false);
   </script>
 </body>
 </html>
