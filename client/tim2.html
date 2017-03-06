@@ -15,7 +15,7 @@
 </head>
 <body>
   <script src="assets/js/color-thief.min.js"></script>
-  <video autoplay="true" id="videoElement" src="assets/vid/test.mov" width="600"></video>
+  <video autoplay="true" loop id="videoElement" src="assets/vid/test.mov" width="600"></video>
   <div id="gameContainer">
     <canvas width="600" id="canvas" height="375"></canvas>
     <canvas width="600" id="game" height="375"></canvas>
@@ -26,6 +26,7 @@
         canvas = document.getElementById('canvas'),
         game = document.getElementById('game'),
         frog = document.getElementById('frog'),
+        body = document.querySelector('body'),
         ctx = canvas.getContext('2d'),
         gctx = game.getContext('2d'),
         w = canvas.width, h = canvas.height,
@@ -34,31 +35,55 @@
     let frogX = w/2 - 25, frogY = h - 50;
     let color;
     let gameHasChanged = true;
+    let tickNo = 0;
 
     document.onkeydown = (e) => {
-      if (e.keyCode == '38') frogY--;
-      else if (e.keyCode == '40') frogY++;
-      else if (e.keyCode == '37') frogX--;
-      else if (e.keyCode == '39') frogX++;
+      if (e.keyCode == '38') frogY-=2;
+      else if (e.keyCode == '40') frogY+=2;
+      else if (e.keyCode == '37') frogX-=2;
+      else if (e.keyCode == '39') frogX+=2;
       gameHasChanged = true;
       e.preventDefault();
     };
 
     video.addEventListener('play', () => {
-      if (video.currentTime < 5) video.currentTime = 20;
       init();
     }, false);
 
     init = () => {
       tick();
-      color = colorThief.getColor(canvas);
-      color = '#' + color[0].toString(16) + color[1].toString(16) + color[2].toString(16);
+      // color = '#' + color[0].toString(16) + color[1].toString(16) + color[2].toString(16);
     }
 
     tick = () => {
+      tickNo++;
       drawFrame();
       drawGame();
+      if (detectCollision()) {
+        body.style.backgroundColor = 'red';
+      } else {
+        body.style.backgroundColor = 'green';
+      }
+      if (tickNo % 20) {
+        setTimeout(() => {
+          color = colorThief.getColor(canvas);
+        }, 500);
+      }
       setTimeout(tick, 50);
+    }
+
+    detectCollision = () => {
+      if (!color) return false;
+
+      const data = ctx.getImageData(frogX, frogY, 50, 50).data;
+      let sum = 0;
+      for (let i=0; i<data.length; i+=4) {
+        const rDiff = data[i] - color[0];
+        const gDiff = data[i+1] - color[1];
+        const bDiff = data[i+2] - color[2];
+        sum += Math.sqrt(rDiff**2 + gDiff**2 + bDiff**2);
+      }
+      return sum > 100000;
     }
 
     drawFrame = () => {
