@@ -1,0 +1,76 @@
+<html>
+<head>
+<style>
+#swatch {
+  width: 40px;
+  height: 40px;
+}
+
+#gameContainer canvas {
+  position: absolute;
+  left: 0;
+}
+
+</style>
+</head>
+<body>
+  <script src="lib/color-thief/dist/color-thief.min.js"></script>
+  <video autoplay="true" id="videoElement" src="assets/vid/test.mov" width="600"></video>
+  <div id="gameContainer">
+    <canvas width="600" id="canvas" height="375"></canvas>
+    <canvas width="600" id="game" height="375"></canvas>
+  </div>
+  <img src="assets/img/frog.png" id="frog" width="50" style="display:none">
+  <script>
+    const video = document.getElementById('videoElement'),
+        canvas = document.getElementById('canvas'),
+        game = document.getElementById('game'),
+        frog = document.getElementById('frog'),
+        ctx = canvas.getContext('2d'),
+        gctx = game.getContext('2d'),
+        w = canvas.width, h = canvas.height,
+        colorThief = new ColorThief();
+
+    let frogX = w/2 - 25, frogY = h - 50;
+    let color;
+
+    document.onkeydown = (e) => {
+      if (e.keyCode == '38') frogY--;
+      else if (e.keyCode == '40') frogY++;
+      else if (e.keyCode == '37') frogX--;
+      else if (e.keyCode == '39') frogX++;
+      e.preventDefault();
+    };
+
+    video.addEventListener('play', () => {
+      if (video.currentTime < 5) video.currentTime = 20;
+      init();
+    }, false);
+
+    init = () => {
+      tick();
+      setTimeout(paintSwatch, 500);
+    }
+
+    tick = () => {
+      drawFrame();
+      drawGame();
+      setTimeout(tick, 10);
+    }
+
+    paintSwatch = () => {
+      color = colorThief.getColor(canvas);
+      color = '#' + color[0].toString(16) + color[1].toString(16) + color[2].toString(16);
+    }
+
+    drawFrame = () => {
+      ctx.drawImage(video, 0, 0, w, h);
+    }
+
+    drawGame = () => {
+      gctx.drawImage(frog, frogX, frogY, 50, 50)
+    }
+
+  </script>
+</body>
+</html>
