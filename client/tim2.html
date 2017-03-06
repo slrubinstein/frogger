@@ -16,7 +16,7 @@
 </head>
 <body>
   <script src="assets/js/color-thief.min.js"></script>
-  <video autoplay="true" id="videoElement" src="assets/vid/test.mov" width="600" style="display:none"></video>
+  <video autoplay="true" id="videoElement" src="assets/vid/test.mov" width="600" style="display:none" loop></video>
   <div id="gameContainer">
     <canvas width="600" id="canvas" height="375"></canvas>
     <canvas width="600" id="game" height="375"></canvas>
@@ -73,15 +73,17 @@
     tick = () => {
       tickNo++;
       drawFrame();
-      drawGame();
-      if (detectCollision()) {
-        body.style.backgroundColor = 'red';
-      } else {
-        body.style.backgroundColor = 'green';
+
+      if (gameHasChanged) {
+        drawGame();
       }
+
+      body.style.backgroundColor = detectCollision() ? 'red' : 'green';
+
       if (tickNo % 20) {
         setTimeout(() => {
           color = colorThief.getColor(canvas);
+          gctx.fillStyle = '#' + color[0].toString(16) + color[1].toString(16) + color[2].toString(16);
         }, 500);
       }
       setTimeout(tick, 50);
@@ -92,7 +94,7 @@
 
       const data = ctx.getImageData(frogX, frogY, 50, 50).data;
       let sum = 0;
-      for (let i=0; i<data.length; i+=4) {
+      for (let i=0; i<data.length; i+=8) {
         const rDiff = data[i] - color[0];
         const gDiff = data[i+1] - color[1];
         const bDiff = data[i+2] - color[2];
@@ -106,13 +108,10 @@
     }
 
     drawGame = () => {
-      if (gameHasChanged) {
-        gctx.clearRect(0,0,w,h);
-        gctx.drawImage(frog, frogX, frogY, 50, 50)
-        gameHasChanged = false;
-      }
-
-
+      gctx.clearRect(0,0,w,h);
+      gctx.drawImage(frog, frogX, frogY, 40, 40)
+      gctx.fillRect(0,0,40,40);
+      gameHasChanged = false;
     }
 
   </script>
