@@ -1,40 +1,39 @@
 <html>
 <head>
-<style>
-#swatch {
-  width: 40px;
-  height: 40px;
-}
+  <style>
+  #swatch {
+    width: 40px;
+    height: 40px;
+  }
 
-#gameContainer canvas {
-  position: absolute;
-  left: 0;
-}
+  #gameContainer canvas {
+    position: absolute;
+    left: 0;
+  }
 
-.gameStats {
-  color: lime;
-  font-size: 600%;
-}
+  .gameStats {
+    color: lime;
+    font-size: 600%;
+  }
 
-#gameDifficulty {
-  position: absolute;
-  left: 5%;
-  top: 5%;
-}
+  #gameDifficulty {
+    position: absolute;
+    left: 5%;
+    top: 5%;
+  }
 
-#gameScore {
-  position: absolute;
-  right: 5%;
-  top: 5%;
-}
+  #gameScore {
+    position: absolute;
+    right: 5%;
+    top: 5%;
+  }
 
-</style>
+  </style>
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <script src="assets/js/color-thief.min.js"></script>
 </head>
 <body>
-  <script src="assets/js/color-thief.min.js"></script>
-  <script src="assets/js/resemble.js"></script>
-  <video autoplay="true" id="videoElement" src="assets/vid/test.mov" width="600" style="display:none" loop></video>
+  <video autoplay="true" id="videoElement" src="assets/vid/test2.mov" width="600" style="display:none" loop></video>
   <div id="gameContainer">
     <canvas width="600" id="canvas" height="375"></canvas>
     <canvas width="600" id="game" height="375"></canvas>
@@ -46,6 +45,7 @@
     </div>
   </div>
   <img src="assets/img/frog.png" id="frog" width="50" style="display:none">
+
   <script>
     const video = document.getElementById('videoElement'),
         canvas = document.getElementById('canvas'),
@@ -56,11 +56,17 @@
         gctx = game.getContext('2d'),
         colorThief = new ColorThief();
 
+    const diffWorker = new Worker("assets/js/diffWorker.js");
+    diffWorker.addEventListener('message', data => {
+      console.log('!!!!');
+    });
+
     let w = window.innerWidth, h = window.innerHeight;
     let frogX = w/2 - 25, frogY = h - 50;
     let color;
     let gameHasChanged = true;
     let tickNo = 0;
+    let prevImage;
 
     document.onkeydown = (e) => {
       if (e.keyCode == '38') frogY-=2;
@@ -97,9 +103,24 @@
       body.style.backgroundColor = detectCollision() ? 'red' : 'green';
 
       if (gameHasChanged) drawGame();
-      if (tickNo % 20) updateSwatch();
+      if (!(tickNo % 20)) {
+        updateSwatch();
+        msgWorker();
+      }
 
       setTimeout(tick, 50);
+    }
+
+    msgWorker = () => {
+      const currentImage = canvas.toDataURL();
+
+      if (prevImage) {
+        diffWorker.postMessage({
+          'img1': currentImage,
+          'img2': prevImage
+        });
+      }
+      prevImage = currentImage;
     }
 
     updateSwatch = () => {
@@ -113,7 +134,7 @@
 
       const data = ctx.getImageData(frogX, frogY, 50, 50).data;
       let sum = 0;
-      for (let i=0; i<data.length; i+=8) {
+      for (let i=0, sum=0; i<data.length; i+=8) {
         const rDiff = data[i] - color[0];
         const gDiff = data[i+1] - color[1];
         const bDiff = data[i+2] - color[2];
