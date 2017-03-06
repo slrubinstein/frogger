@@ -12,10 +12,11 @@
 }
 
 </style>
+  <link rel="stylesheet" type="text/css" href="theme.css">
 </head>
 <body>
   <script src="assets/js/color-thief.min.js"></script>
-  <video autoplay="true" loop id="videoElement" src="assets/vid/test.mov" width="600"></video>
+  <video autoplay="true" id="videoElement" src="assets/vid/test.mov" width="600" style="display:none"></video>
   <div id="gameContainer">
     <canvas width="600" id="canvas" height="375"></canvas>
     <canvas width="600" id="game" height="375"></canvas>
@@ -29,8 +30,20 @@
         body = document.querySelector('body'),
         ctx = canvas.getContext('2d'),
         gctx = game.getContext('2d'),
-        w = canvas.width, h = canvas.height,
         colorThief = new ColorThief();
+
+    let w = window.innerWidth, h = window.innerHeight;
+
+    resize = () => {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      game.height = h;
+      canvas.height = h;
+      game.width = w;
+      canvas.width = w;
+    }
+
+    window.addEventListener('resize', resize);
 
     let frogX = w/2 - 25, frogY = h - 50;
     let color;
@@ -52,7 +65,9 @@
 
     init = () => {
       tick();
-      // color = '#' + color[0].toString(16) + color[1].toString(16) + color[2].toString(16);
+      color = colorThief.getColor(canvas);
+      color = '#' + color[0].toString(16) + color[1].toString(16) + color[2].toString(16);
+      resize();
     }
 
     tick = () => {
@@ -96,6 +111,8 @@
         gctx.drawImage(frog, frogX, frogY, 50, 50)
         gameHasChanged = false;
       }
+
+
     }
 
   </script>
