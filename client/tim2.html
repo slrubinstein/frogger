@@ -51,18 +51,14 @@
 
     init = () => {
       tick();
-      setTimeout(paintSwatch, 500);
+      color = colorThief.getColor(canvas);
+      color = '#' + color[0].toString(16) + color[1].toString(16) + color[2].toString(16);
     }
 
     tick = () => {
       drawFrame();
       drawGame();
-      setTimeout(tick, 10);
-    }
-
-    paintSwatch = () => {
-      color = colorThief.getColor(canvas);
-      color = '#' + color[0].toString(16) + color[1].toString(16) + color[2].toString(16);
+      setTimeout(tick, 50);
     }
 
     drawFrame = () => {
