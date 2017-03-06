@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "node-rtsp-stream-es6": "^1.0.6",
-    "resemblejs": "^2.2.3"
+    "resemblejs": "^2.2.3",
+    "jsmpeg": "^1.0.0",
+    "node-rtsp-stream-es6": "^1.0.6"
   }
 }
