@@ -16,6 +16,7 @@
 </head>
 <body>
   <script src="assets/js/color-thief.min.js"></script>
+  <script src="assets/js/resemble.js"></script>
   <video autoplay="true" id="videoElement" src="assets/vid/test.mov" width="600" style="display:none" loop></video>
   <div id="gameContainer">
     <canvas width="600" id="canvas" height="375"></canvas>
@@ -34,17 +35,6 @@
 
     let w = window.innerWidth, h = window.innerHeight;
 
-    resize = () => {
-      w = window.innerWidth;
-      h = window.innerHeight;
-      game.height = h;
-      canvas.height = h;
-      game.width = w;
-      canvas.width = w;
-    }
-
-    window.addEventListener('resize', resize);
-
     let frogX = w/2 - 25, frogY = h - 50;
     let color;
     let gameHasChanged = true;
@@ -59,34 +49,39 @@
       e.preventDefault();
     };
 
-    video.addEventListener('play', () => {
-      init();
-    }, false);
+    window.addEventListener('resize', resize);
+
+    resize = () => {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      game.height = h;
+      canvas.height = h;
+      game.width = w;
+      canvas.width = w;
+    }
+
+    video.addEventListener('play', init, false);
 
     init = () => {
-      tick();
-      color = colorThief.getColor(canvas);
-      color = '#' + color[0].toString(16) + color[1].toString(16) + color[2].toString(16);
       resize();
+      tick();
     }
 
     tick = () => {
       tickNo++;
       drawFrame();
-
-      if (gameHasChanged) {
-        drawGame();
-      }
-
       body.style.backgroundColor = detectCollision() ? 'red' : 'green';
 
-      if (tickNo % 20) {
-        setTimeout(() => {
-          color = colorThief.getColor(canvas);
-          gctx.fillStyle = '#' + color[0].toString(16) + color[1].toString(16) + color[2].toString(16);
-        }, 500);
-      }
+      if (gameHasChanged) drawGame();
+      if (tickNo % 20) updateSwatch();
+
       setTimeout(tick, 50);
+    }
+
+    updateSwatch = () => {
+      if (!canvas) return;
+      color = colorThief.getColor(canvas);
+      gctx.fillStyle = '#' + color[0].toString(16) + color[1].toString(16) + color[2].toString(16);
     }
 
     detectCollision = () => {
