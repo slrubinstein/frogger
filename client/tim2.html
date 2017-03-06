@@ -11,8 +11,25 @@
   left: 0;
 }
 
+.gameStats {
+  color: lime;
+  font-size: 600%;
+}
+
+#gameDifficulty {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+}
+
+#gameScore {
+  position: absolute;
+  right: 5%;
+  top: 5%;
+}
+
 </style>
-  <link rel="stylesheet" type="text/css" href="theme.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 </head>
 <body>
   <script src="assets/js/color-thief.min.js"></script>
@@ -21,6 +38,12 @@
   <div id="gameContainer">
     <canvas width="600" id="canvas" height="375"></canvas>
     <canvas width="600" id="game" height="375"></canvas>
+  </div>
+  <div id="gameOverlay">
+    <div id="gameInfo">
+      <div id="gameDifficulty" class="gameStats">0.0</div>
+      <div id="gameScore" class="gameStats">10000</div>
+    </div>
   </div>
   <img src="assets/img/frog.png" id="frog" width="50" style="display:none">
   <script>
@@ -34,6 +57,8 @@
         colorThief = new ColorThief();
 
     let w = window.innerWidth, h = window.innerHeight;
+
+    window.addEventListener('resize', resize);
 
     let frogX = w/2 - 25, frogY = h - 50;
     let color;
@@ -58,6 +83,12 @@
       canvas.height = h;
       game.width = w;
       canvas.width = w;
+
+      gctx.fillStyle="#FFFFFF";
+      // start line
+      gctx.fillRect(0, h * 4 / 5, 100, 100);
+      // stop line
+      gctx.fillRect(0, h * 2 / 5, 100, 100);
     }
 
     video.addEventListener('play', init, false);
