@@ -1,6 +1,6 @@
 let color, prevImage,
-    w = window.innerWidth,
-    h = window.innerHeight,
+    w = 1920,
+    h = 1080,
     difficulty = 0,
     fillColor = 'lime',
     lives = 3,
@@ -42,16 +42,16 @@ onKeyUp = (e) => {
   e.preventDefault();
 };
 
-resize = () => {
-  w = window.innerWidth;
-  h = window.innerHeight;
-  game.height = h;
-  canvas.height = h;
-  diff.height = h;
-  game.width = w;
-  canvas.width = w;
-  diff.width = w;
-};
+// resize = () => {
+//   w = window.innerWidth;
+//   h = window.innerHeight;
+//   game.height = h;
+//   canvas.height = h;
+//   diff.height = h;
+//   game.width = w;
+//   canvas.width = w;
+//   diff.width = w;
+// };
 
 startVideo = () => {
   var canvas = document.getElementById('canvas');
@@ -63,10 +63,16 @@ startVideo = () => {
 }
 
 init = () => {
+<<<<<<< e3bb24b7d0bd7df8aec8037daf29ad9f3fdf447c
   // startVideo();
   resize();
   setLives();
   // tick();
+=======
+  startVideo();
+  // resize();
+  tick();
+>>>>>>> full screen video canvases
 };
 
 startGame = () => {
@@ -216,8 +222,9 @@ drawGame = () => {
   gctx.drawImage(fly, flyX, flyY, frogWidth, frogHeight)
 };
 
-window.addEventListener('resize', resize);
 video.addEventListener('play', init, false);
+// window.addEventListener('resize', resize);
+document.addEventListener('keyup', onKeyUp);
 diffWorker.addEventListener('message', onDiffMessage);
 
 init();
