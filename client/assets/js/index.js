@@ -63,16 +63,10 @@ startVideo = () => {
 }
 
 init = () => {
-<<<<<<< e3bb24b7d0bd7df8aec8037daf29ad9f3fdf447c
-  // startVideo();
-  resize();
   setLives();
-  // tick();
-=======
   startVideo();
   // resize();
   tick();
->>>>>>> full screen video canvases
 };
 
 startGame = () => {
