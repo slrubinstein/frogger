@@ -1,0 +1,26 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/styles/index.css">
+  <script src="assets/js/color-thief.min.js"></script>
+</head>
+
+<body>
+  <video autoplay="true" id="videoElement" src="assets/vid/test2.mov"
+    width="600" style=" display:none" loop></video>
+  <div id="gameContainer">
+    <canvas width="600" id="diff" height="375"></canvas>
+    <canvas width="600" id="canvas" height="375"></canvas>
+    <canvas width="600" id="game" height="375"></canvas>
+  </div>
+  <div id="gameOverlay">
+    <div id="gameInfo">
+      <div id="gameScore" class="gameStats">0</div>
+    </div>
+  </div>
+  <img src="assets/img/frog.png" id="frog" width="50" style="display:none">
+  <img src="assets/img/fly.png" id="fly" width="50" style="display:none">
+
+  <script src="assets/js/index.js"></script>
+</body>
+</html>

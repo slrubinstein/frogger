@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "canvas-webworker": "0.0.2",
     "node-rtsp-stream-es6": "^1.0.6",
-    "resemblejs": "^2.2.3"
+    "resemblejs": "^2.2.3",
+    "webworkify": "^1.4.0"
   }
 }

@@ -1,14 +1,13 @@
-importScripts('resemble.js');
-const { image } = require('canvas-webworker');
+importScripts('pixelmatch.js');
 
 self.addEventListener('message', function({ data }) {
-  if (resemble) {
-    console.log(Image);
-    diff = resemble(data.img1)
-      .compareTo(data.img2)
-      .ignoreColors()
-      .onComplete(data => {
-        // postMessage(data.getImageDataUrl());
-      });
-  }
+  const diff = pixelmatch(data.img1data, data.img2data, data.diff, data.width, data.height, {
+    threshold: 0.2
+  });
+
+  self.postMessage({
+    'diff': data.diff,
+    'difficulty': diff/35000
+  });
+
 }, false);
