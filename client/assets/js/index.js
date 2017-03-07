@@ -27,6 +27,10 @@ const
     diffWorker = new Worker('assets/js/diffWorker.js'),
     colorThief = new ColorThief();
 
+ctx.mozImageSmoothingEnabled = false;
+ctx.webkitImageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = false;
+
 let frogX = w/2 - 25,
     frogY = h - 50,
     frogWidth = 30,
@@ -180,7 +184,8 @@ drawGame = () => {
   gctx.drawImage(fly, flyX, flyY, frogWidth, frogHeight)
 };
 
-video.addEventListener('play', init, false);
+// video.addEventListener('play', init, false);
+// window.addEventListener('resize', resize);
 document.addEventListener('keyup', onKeyUp);
 diffWorker.addEventListener('message', onDiffMessage);
 

@@ -20,7 +20,7 @@ onKeyUpStart = (e) => {
 }
 
 drawVideo = () => {
-  ctx.drawImage(video, 0, 0, w, h);
+  ctx.drawImage(canvas, 0, 0, w, h);
 };
 
 initMenu();
