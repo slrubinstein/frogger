@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "ffmpeg": "ffmpeg -rtsp_transport tcp -i 'rtsp://admin:hack9000@10.11.10.217/cam/realmonitor?channel=1&subtype=0' -f mpegts -vcodec mpeg1video -b:v 6000k -r 20 http://localhost:8081/test/",
+    "ffmpeg": "ffmpeg -rtsp_transport tcp -i 'rtsp://admin:hack9000@10.10.10.74/cam/realmonitor?channel=1&subtype=0' -f mpegts -vcodec mpeg1video -b:v 6000k -r 20 http://localhost:8081/test/",
     "relay": "node websocket-relay.js test",
     "serve": "http-server ./client",
     "start": "npm run ffmpeg & npm run relay & npm run serve"
