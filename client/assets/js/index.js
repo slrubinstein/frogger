@@ -36,9 +36,9 @@ const
 frog.src = 'assets/img/frog.png';
 fly.src = 'assets/img/fly.gif';
 
-ctx.mozImageSmoothingEnabled = false;
-ctx.webkitImageSmoothingEnabled = false;
-ctx.imageSmoothingEnabled = false;
+gctx.mozImageSmoothingEnabled = false;
+gctx.webkitImageSmoothingEnabled = false;
+gctx.imageSmoothingEnabled = false;
 
 let frogX,
     frogY,
