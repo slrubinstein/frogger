@@ -24,3 +24,17 @@
   right: 5%;
   top: 10px;
 }
+
+#gameOverlay {
+  background-color: black;
+  height:80px;
+  position: absolute;
+  width: 100%;
+}
+
+.life {
+  height: 60px;
+  width: 60px;
+  margin-top: 10px;
+  padding: 0 6px;
+}

@@ -3,6 +3,7 @@ let color, prevImage,
     h = window.innerHeight,
     difficulty = 0,
     fillColor = 'lime',
+    lives = 3,
     tickNo = 0,
     score = 0;
 
@@ -15,6 +16,7 @@ const
     frog = document.getElementById('frog'),
     fly = document.getElementById('fly'),
     body = document.querySelector('body'),
+    gameLives = document.getElementById('gameLives'),
     ctx = canvas.getContext('2d'),
     gctx = game.getContext('2d'),
     dctx = diff.getContext('2d'),
@@ -63,8 +65,19 @@ startVideo = () => {
 init = () => {
   startVideo();
   resize();
+  setLives();
   tick();
 };
+
+setLives = () => {
+  gameLives.innerHTML = '';
+  for (let i =0; i < lives; i++) {
+    let img = document.createElement('img');
+    img.src = 'assets/img/frog.png';
+    img.classList.add('life');
+    gameLives.append(img);
+  }
+}
 
 tick = () => {
   tickNo++;
@@ -73,8 +86,7 @@ tick = () => {
   const isDelicious = detectFly();
 
   if (isSplat) {
-    score = 0;
-    gameScore.innerHTML = parseInt(score, 10);
+    loseLife();
   }
   if (fillColor === 'lime' && isSplat) {
     fillColor = 'red';
@@ -97,6 +109,17 @@ tick = () => {
   drawGame();
   setTimeout(tick, 50);
 };
+
+loseLife = () => {
+  lives--;
+  if (lives <= 0) {
+    alert('GAME OVER')
+  }
+  setLives();
+  gameScore.innerHTML = parseInt(score, 10);
+  frogX = w/2 - 25;
+  frogY = h - 50;
+}
 
 msgDiffWorker = () => {
   const currentImage = ctx.getImageData(0, 0, w, h).data;
