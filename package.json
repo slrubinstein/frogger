@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "ffmpeg": "ffmpeg -rtsp_transport tcp -i 'rtsp://admin:hack9000@10.11.10.217/cam/realmonitor?channel=1&subtype=0' -f mpegts -vcodec mpeg1video -b:v 6000k -r 20 http://localhost:8081/test/",
+    "relay": "node websocket-relay.js test",
+    "serve": "http-server ./client",
+    "start": "npm run ffmpeg & npm run relay & npm run serve"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "canvas-webworker": "0.0.2",
-    "node-rtsp-stream-es6": "^1.0.6",
-    "resemblejs": "^2.2.3",
-    "webworkify": "^1.4.0"
+    "ws": "^2.2.0"
   }
 }
