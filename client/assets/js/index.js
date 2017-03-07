@@ -42,17 +42,6 @@ onKeyUp = (e) => {
   e.preventDefault();
 };
 
-// resize = () => {
-//   w = window.innerWidth;
-//   h = window.innerHeight;
-//   game.height = h;
-//   canvas.height = h;
-//   diff.height = h;
-//   game.width = w;
-//   canvas.width = w;
-//   diff.width = w;
-// };
-
 startVideo = () => {
   var canvas = document.getElementById('canvas');
   var url = 'ws://'+document.location.hostname+':8082/';
@@ -65,7 +54,6 @@ startVideo = () => {
 init = () => {
   setLives();
   startVideo();
-  // resize();
   tick();
 };
 
@@ -154,30 +142,6 @@ updateSwatch = () => {
 };
 
 /**
- * This collision method works better when it is dark or there are long shadows
- */
-// detectCollision = () => {
-//   if (!color || frogY > playableBottom || frogY < playableTop) return false;
-
-//   const data = ctx.getImageData(frogX, frogY, frogWidth, frogHeight).data;
-//   let sum = 0;
-
-//   for (let i=0; i<data.length; i+=8) {
-//     let val = [];
-
-//     for (let j=0; j<=1; j++) {
-//       const rDiff = data[i] - color[j][0];
-//       const gDiff = data[i+1] - color[j][1];
-//       const bDiff = data[i+2] - color[j][2];
-//       val[j] = Math.sqrt(rDiff**2 + gDiff**2 + bDiff**2);
-//     }
-
-//     sum += Math.min(val[0], val[1]);
-//   }
-//   return sum > 45000;
-// };
-
-/**
  * This collision method works better when visibility is generally good and
  * the feed is stable
  */
@@ -217,7 +181,6 @@ drawGame = () => {
 };
 
 video.addEventListener('play', init, false);
-// window.addEventListener('resize', resize);
 document.addEventListener('keyup', onKeyUp);
 diffWorker.addEventListener('message', onDiffMessage);
 
