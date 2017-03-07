@@ -65,8 +65,14 @@ body {
   display: none;
   position: absolute;
   text-transform: uppercase;
-  transform: translate(50%, 50%);
+  transform: translateY(50%);
+  width: 100%;
   z-index: 2;
+}
+
+#menuContents {
+  margin: auto;
+  width: 648px;
 }
 
 #menu.visible {
@@ -97,7 +103,7 @@ body {
 #pressS {
   animation: blink 1s infinite;
   font-size: 26px;
-  transform: translateX(25%);
+  transform: translateX(15%);
   margin-bottom: 78px;
 }
 
