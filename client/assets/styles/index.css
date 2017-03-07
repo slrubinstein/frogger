@@ -1,3 +1,7 @@
+body {
+  font-family: 'Press Start 2P', cursive;
+}
+
 #swatch {
   width: 40px;
   height: 40px;
@@ -37,4 +41,61 @@
   width: 60px;
   margin-top: 10px;
   padding: 0 6px;
+}
+
+.skrim:before {
+  background-color: black;
+  content: '';
+  height: 100%;
+  opacity: .5;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+#menu {
+  align-items: center;
+  align-content: center;
+  color: red;
+  display: none;
+  position: absolute;
+  text-transform: uppercase;
+  transform: translate(50%, 50%);
+  z-index: 2;
+}
+
+#menu.visible {
+  display: block;
+}
+
+#title {
+  display: inline-block;
+  font-size: 78px;
+  margin-bottom: 26px;
+}
+
+@keyframes blink {
+  0%   {
+    opacity: 0;
+  }
+  49% {
+    opacity: 0
+  }
+  50% {
+    opacity: 1
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#pressS {
+  animation: blink 1s infinite;
+  font-size: 26px;
+  transform: translateX(25%);
+  margin-bottom: 78px;
+}
+
+#menuFrog {
+  height: 78px;
 }

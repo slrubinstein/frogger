@@ -8,7 +8,7 @@ let color, prevImage,
     score = 0;
 
 const
-    // video = document.getElementById('videoElement'),
+    video = document.getElementById('videoElement'),
     canvas = document.getElementById('canvas'),
     game = document.getElementById('game'),
     gameScore = document.getElementById('gameScore'),
@@ -63,11 +63,16 @@ startVideo = () => {
 }
 
 init = () => {
-  startVideo();
+  // startVideo();
   resize();
   setLives();
-  tick();
+  // tick();
 };
+
+startGame = () => {
+  tick();
+  document.addEventListener('keyup', onKeyUp);
+}
 
 setLives = () => {
   gameLives.innerHTML = '';
@@ -112,9 +117,7 @@ tick = () => {
 
 loseLife = () => {
   lives--;
-  if (lives <= 0) {
-    alert('GAME OVER')
-  }
+
   setLives();
   gameScore.innerHTML = parseInt(score, 10);
   frogX = w/2 - 25;
@@ -192,7 +195,7 @@ detectFly = () => {
 }
 
 drawFrame = () => {
-  // ctx.drawImage(video, 0, 0, w, h);
+  ctx.drawImage(video, 0, 0, w, h);
 };
 
 drawGame = () => {
@@ -214,8 +217,7 @@ drawGame = () => {
 };
 
 window.addEventListener('resize', resize);
-document.addEventListener('keyup', onKeyUp);
-// video.addEventListener('play', init, false);
+video.addEventListener('play', init, false);
 diffWorker.addEventListener('message', onDiffMessage);
 
 init();

@@ -2,12 +2,13 @@
 <head>
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" type="text/css" href="assets/styles/index.css">
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
   <script src="assets/js/color-thief.min.js"></script>
 </head>
 
 <body>
-  <!-- <video autoplay="true" id="videoElement" src="assets/vid/test2.mov"
-    width="600" style=" display:none" loop></video> -->
+  <video autoplay="true" id="videoElement" src="assets/vid/test2.mov"
+    width="600" style=" display:none" loop></video>
   <div id="gameContainer">
     <canvas width="600" id="diff" height="375"></canvas>
     <canvas width="600" id="canvas" height="375"></canvas>
@@ -18,11 +19,20 @@
       <div id="gameLives"></div>
       <div id="gameScore" class="gameStats">0</div>
     </div>
+    <div id="menu">
+        <h1 id="title">Frogger</h1>
+        <img id="menuFrog" src="assets/img/frog.png" />
+        <p id="pressS">Press S to Start</p>
+        <p>Press Arrow Keys to Move</p>
+        <p>Eat Flies</p>
+        <p>Avoid Cars</p>
+    </div>
   </div>
   <img src="assets/img/frog.png" id="frog" width="50" style="display:none">
   <img src="assets/img/fly.png" id="fly" width="50" style="display:none">
 
   <script type="text/javascript" src="./jsmpeg/jsmpeg.min.js"></script>
   <script src="assets/js/index.js"></script>
+  <script src="assets/js/menu.js"></script>
 </body>
 </html>
