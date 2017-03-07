@@ -8,7 +8,7 @@ let color, prevImage,
     score = 0;
 
 const
-    video = document.getElementById('videoElement'),
+    // video = document.getElementById('videoElement'),
     canvas = document.getElementById('canvas'),
     game = document.getElementById('game'),
     gameScore = document.getElementById('gameScore'),
@@ -78,7 +78,7 @@ setLives = () => {
 
 tick = () => {
   tickNo++;
-  drawFrame();
+  // drawFrame();
   const isSplat = detectCollision();
   const isDelicious = detectFly();
 
@@ -162,9 +162,9 @@ detectFly = () => {
   return (Math.abs(frogX - flyX) < 20 && Math.abs(frogY - flyY) < 20);
 }
 
-drawFrame = () => {
-  ctx.drawImage(video, 0, 0, w, h);
-};
+// drawFrame = () => {
+//   ctx.drawImage(video, 0, 0, w, h);
+// };
 
 drawGame = () => {
   gctx.clearRect(0,0,w,h);
