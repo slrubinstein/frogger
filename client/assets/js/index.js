@@ -6,7 +6,8 @@ let color, prevImage,
     tickNo = 0,
     score = 0;
 
-const video = document.getElementById('videoElement'),
+const
+    // video = document.getElementById('videoElement'),
     canvas = document.getElementById('canvas'),
     game = document.getElementById('game'),
     gameScore = document.getElementById('gameScore'),
@@ -50,7 +51,17 @@ resize = () => {
   diff.width = w;
 };
 
+startVideo = () => {
+  var canvas = document.getElementById('canvas');
+  var url = 'ws://'+document.location.hostname+':8082/';
+  var player = new JSMpeg.Player(url, {
+    canvas: canvas,
+    disableGl: true
+  });
+}
+
 init = () => {
+  startVideo();
   resize();
   tick();
 };
@@ -80,7 +91,7 @@ tick = () => {
     score += difficulty;
     gameScore.innerHTML = parseInt(score, 10);
   }
-  if (!(tickNo % 1)) msgDiffWorker();
+  if (!(tickNo % 3)) msgDiffWorker();
   if (!(tickNo % 20)) updateSwatch();
 
   drawGame();
@@ -158,7 +169,7 @@ detectFly = () => {
 }
 
 drawFrame = () => {
-  ctx.drawImage(video, 0, 0, w, h);
+  // ctx.drawImage(video, 0, 0, w, h);
 };
 
 drawGame = () => {
@@ -181,5 +192,7 @@ drawGame = () => {
 
 window.addEventListener('resize', resize);
 document.addEventListener('keyup', onKeyUp);
-video.addEventListener('play', init, false);
+// video.addEventListener('play', init, false);
 diffWorker.addEventListener('message', onDiffMessage);
+
+init();
