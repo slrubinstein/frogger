@@ -6,7 +6,6 @@ initMenu = () => {
   body.classList.add('skrim');
   menuElement.classList.add('visible');
   document.addEventListener('keyup', onKeyUpStart);
-  menuVideo = setInterval(drawVideo, 16);
 }
 
 onKeyUpStart = (e) => {
