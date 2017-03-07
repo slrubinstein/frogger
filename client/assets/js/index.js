@@ -58,7 +58,6 @@ startVideo = () => {
 init = () => {
   setLives();
   startVideo();
-  tick();
 };
 
 startGame = () => {
@@ -78,7 +77,6 @@ setLives = () => {
 
 tick = () => {
   tickNo++;
-  // drawFrame();
   const isSplat = detectCollision();
   const isDelicious = detectFly();
 
@@ -162,10 +160,6 @@ detectFly = () => {
   return (Math.abs(frogX - flyX) < 20 && Math.abs(frogY - flyY) < 20);
 }
 
-// drawFrame = () => {
-//   ctx.drawImage(video, 0, 0, w, h);
-// };
-
 drawGame = () => {
   gctx.clearRect(0,0,w,h);
 
@@ -184,9 +178,6 @@ drawGame = () => {
   gctx.drawImage(fly, flyX, flyY, frogWidth, frogHeight)
 };
 
-// video.addEventListener('play', init, false);
-// window.addEventListener('resize', resize);
-document.addEventListener('keyup', onKeyUp);
 diffWorker.addEventListener('message', onDiffMessage);
 
 init();
