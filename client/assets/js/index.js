@@ -5,13 +5,15 @@ let color, prevImage,
     fillColor = 'lime',
     lives = 3,
     tickNo = 0,
-    score = 0;
+    score = 0,
+    hiScore = 0;
 
 const
     // video = document.getElementById('videoElement'),
     canvas = document.getElementById('canvas'),
     game = document.getElementById('game'),
-    gameScore = document.getElementById('gameScore'),
+    currentScore = document.getElementById('currentScore'),
+    gameHiScore = document.getElementById('hiScore'),
     diff = document.getElementById('diff'),
     frog = new Image(),
     fly = new Image(),
@@ -42,6 +44,7 @@ let frogX = w/2 - 25,
     flyY = Math.random() * (playableBottom - playableTop) + playableTop;
 
 onKeyUp = (e) => {
+  e.preventDefault();
   if (e.keyCode == '38') frogY-=30;
   else if (e.keyCode == '40') frogY+=30;
   else if (e.keyCode == '37') frogX-=30;
@@ -54,14 +57,20 @@ startVideo = () => {
   var url = 'ws://'+document.location.hostname+':8082/';
   var player = new JSMpeg.Player(url, {
     canvas: canvas,
-    disableGl: true
+    disableGl: true,
+    videoBufferSize: 1024 * 1024
   });
 }
 
 init = () => {
   setLives();
   startVideo();
+  displayHiScore();
 };
+
+displayHiScore = () => {
+  gameHiScore.innerHTML = hiScore;
+}
 
 startGame = () => {
   tick();
@@ -99,7 +108,8 @@ tick = () => {
     flyX = Math.random() * w,
     flyY = Math.random() * (playableBottom - playableTop) + playableTop;
     score += difficulty;
-    gameScore.innerHTML = parseInt(score, 10);
+    currentScore.innerHTML = parseInt(score, 10);
+    gameHiScore.innerHTML = Math.max(hiScore, parseInt(score));
   }
   if (!(tickNo % 3)) msgDiffWorker();
   if (!(tickNo % 20)) updateSwatch();
@@ -112,7 +122,8 @@ loseLife = () => {
   lives--;
 
   setLives();
-  gameScore.innerHTML = parseInt(score, 10);
+  currentScore.innerHTML = parseInt(score, 10);
+  gameHiScore.innerHTML = Math.max(hiScore, parseInt(score));
   frogX = w/2 - 25;
   frogY = h - 50;
 }

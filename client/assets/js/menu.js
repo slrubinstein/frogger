@@ -1,7 +1,6 @@
 // const body = document.getElementByTagNames('body')[0];
 const menuElement = document.getElementById('menu');
 const levelContainer = document.getElementById('levels');
-let menuVideo;
 
 levels = [
   {img: 'level0.svg', name: 'Live Stream'},
@@ -19,8 +18,9 @@ initMenu = () => {
 }
 
 onKeyUpStart = (e) => {
-  if (e.keyCode === 83) {
+  if (e.keyCode === 83 /* S */) {
     document.removeEventListener('keyup', onKeyUpStart);
+    document.getElementById('menu').style.display = 'none';
     startGame();
   }
 }
