@@ -18,6 +18,7 @@ const
     diff = document.getElementById('diff'),
     frog = new Image(),
     fly = new Image(),
+    deadFrog = new Image(),
     body = document.querySelector('body'),
     gameLives = document.getElementById('gameLives'),
     ctx = canvas.getContext('2d'),
@@ -34,6 +35,7 @@ const
 
 frog.src = 'assets/img/frog.png';
 fly.src = 'assets/img/fly.gif';
+deadFrog.src = 'assets/img/deadFrog.png';
 
 gctx.mozImageSmoothingEnabled = false;
 gctx.webkitImageSmoothingEnabled = false;
@@ -41,19 +43,21 @@ gctx.imageSmoothingEnabled = false;
 
 let frogX,
     frogY,
-    frogWidth,
-    frogHeight,
+    frogWidth = 50,
+    frogHeight = 40,
     flyX,
-    flyY;
+    flyY,
+    deadFrogX,
+    deadFrogY;
 
 onKeyUp = (e) => {
   if (e.keyCode > 36 && e.keyCode < 41) {
     e.preventDefault();
     switch (e.keyCode) {
-      case 38: newFrogPositionY(frogY - 30); break;
-      case 40: newFrogPositionY(frogY + 30); break;
-      case 37: newFrogPositionX(frogX - 30); break;
-      case 39: newFrogPositionX(frogX + 30); break;
+      case 38: newFrogPositionY(frogY - frogHeight); break;
+      case 40: newFrogPositionY(frogY + frogHeight); break;
+      case 37: newFrogPositionX(frogX - frogWidth); break;
+      case 39: newFrogPositionX(frogX + frogWidth); break;
     }
   }
 };
@@ -96,8 +100,6 @@ startGame = () => {
   setLives();
   frogX = w/2 - 25;
   frogY = h - 45;
-  frogWidth = 70;
-  frogHeight = 60;
   flyX = Math.random() * w;
   flyY = Math.random() * (playableBottom - playableTop) + playableTop;
   document.addEventListener('keyup', onKeyUp);
@@ -159,14 +161,23 @@ loseLife = () => {
 
   setLives();
   setScore();
+  deadFrogX = frogX;
+  deadFrogY = frogY;
 
   if (lives <= 0) {
     gameOver();
     return;
   }
 
+  frog.src = '';
+  setTimeout(() => {
+    frog.src = 'assets/img/frog.png';
+    deadFrogX = null;
+    deadFrogY = null;
+  }, 500);
   frogX = w/2 - 25;
   frogY = h - 50;
+
 }
 
 msgDiffWorker = () => {
@@ -204,6 +215,7 @@ drawGame = () => {
 
   gctx.fillStyle=fillColor;
   gctx.drawImage(frog, frogX, frogY, frogWidth, frogHeight)
+  gctx.drawImage(deadFrog, deadFrogX, deadFrogY, frogWidth, frogHeight)
   gctx.drawImage(fly, flyX, flyY, frogWidth, frogHeight)
 };
 

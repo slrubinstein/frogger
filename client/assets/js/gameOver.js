@@ -12,6 +12,8 @@ gameOver = () => {
 }
 
 onKeyUpRestart = (e) => {
+  deadFrogX = null;
+  deadFrogY = null;
   if (e.keyCode === 83 /* S */) {
     gameOverScreen.style.display = 'none';
     initMenu();
