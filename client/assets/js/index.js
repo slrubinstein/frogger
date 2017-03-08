@@ -44,12 +44,15 @@ let frogX = w/2 - 25,
     flyY = Math.random() * (playableBottom - playableTop) + playableTop;
 
 onKeyUp = (e) => {
-  e.preventDefault();
-  if (e.keyCode == '38') frogY-=30;
-  else if (e.keyCode == '40') frogY+=30;
-  else if (e.keyCode == '37') frogX-=30;
-  else if (e.keyCode == '39') frogX+=30;
-  e.preventDefault();
+  if (e.keyCode > 36 && e.keyCode < 41) {
+    e.preventDefault();
+    switch (e.keyCode) {
+      case 38: frogY-=30; break;
+      case 40: frogY+=30; break;
+      case 37: frogX-=30; break;
+      case 39: frogX+=30; break;
+    }
+  }
 };
 
 startVideo = () => {
@@ -58,7 +61,7 @@ startVideo = () => {
   var player = new JSMpeg.Player(url, {
     canvas: canvas,
     disableGl: true,
-    videoBufferSize: 1024 * 1024
+    videoBufferSize: 1200 * 1200
   });
 }
 
