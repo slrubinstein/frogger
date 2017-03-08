@@ -51,6 +51,7 @@ gctx.webkitImageSmoothingEnabled = false;
 gctx.imageSmoothingEnabled = false;
 
 let keyDownTimer = null;
+trafficNoise.loop = true;
 
 onKeyDown = (e) => {
   if (e.keyCode > 36 && e.keyCode < 41) {

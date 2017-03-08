@@ -2,6 +2,7 @@ const gameOverScreen = document.getElementById('gameOver');
 const sadNoiseSignalingTheEndOfTheGame = new Audio('assets/sounds/game-over.mp3'),
 
 gameOver = () => {
+  trafficNoise.pause();
   isGameOver = true;
   gameOverScreen.style.display = 'flex';
   frogX = null;
