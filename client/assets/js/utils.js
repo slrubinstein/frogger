@@ -12,7 +12,7 @@ detectCollision = () => {
 }
 
 detectFly = () => {
-  return (Math.abs(frogX - flyX) < 20 && Math.abs(frogY - flyY) < 20);
+  return (Math.abs(frogX - flyX) < frogWidth && Math.abs(frogY - flyY) < frogHeight);
 }
 
 newFrogPositionX = (position) => {

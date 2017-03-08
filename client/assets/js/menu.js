@@ -1,6 +1,7 @@
 const menuElement = document.getElementById('menu');
 const levelContainer = document.getElementById('levels');
 const beep = new Audio('assets/sounds/beep2.mp3');
+beep.volume = .5;
 let activeLevel = 0;
 
 levels = [

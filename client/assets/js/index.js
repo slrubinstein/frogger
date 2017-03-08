@@ -23,6 +23,7 @@ const ribbit = new Audio('assets/sounds/frog-ribbet2.wav'),
   splat = new Audio('assets/sounds/splat.wav'),
   horn = new Audio('assets/sounds/beep.wav'),
   startCar = new Audio('assets/sounds/StartCar.wav'),
+  trafficNoise = new Audio('assets/sounds/traffic_noise.m4a'),
   diffWorker = new Worker('assets/js/diffWorker.js');
 
 const frog = new Image(),
@@ -40,6 +41,7 @@ let lastTick = Date.now(),
   JSMpegPlayer = null
   video = null;
 
+horn.volume = .5;
 frog.src = 'assets/img/frog.png';
 fly.src = 'assets/img/fly.gif';
 deadFrog.src = 'assets/img/deadFrog.png';
@@ -137,6 +139,7 @@ startGame = () => {
     video.currentTime = 0;
     video.play();
   }
+  trafficNoise.play();
 }
 
 setLives = () => {
