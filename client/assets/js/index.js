@@ -155,7 +155,6 @@ startGame = () => {
 setFly = () => {
   flyX = Math.round(Math.random() * w / frogWidth) * frogWidth + frogWidth/2;
   flyY = Math.round(Math.random() * ((playableBottom - playableTop) + playableTop) / frogHeight) * frogHeight;
-
 }
 
 setLives = () => {
