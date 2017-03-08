@@ -33,6 +33,10 @@ img, canvas {
   top: 10px;
 }
 
+#gameInfo {
+  height: 100%;
+}
+
 #gameScore {
   position: absolute;
   right: 5%;
@@ -54,7 +58,7 @@ img, canvas {
 }
 
 #menu {
-  display: flex;
+  display: none;
   flex-flow: column;
   align-items:center;
   color: red;
@@ -117,4 +121,16 @@ img, canvas {
 
 #menuFrog {
   height: 78px;
+}
+
+#gameOver {
+  flex-flow: column;
+  align-items:center;
+  color: red;
+  font-size: 32px;
+  display: none;
+  padding-top: 20%;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.4);
 }

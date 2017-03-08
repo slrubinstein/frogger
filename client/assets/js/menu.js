@@ -11,6 +11,7 @@ levels = [
 
 initMenu = () => {
   document.addEventListener('keyup', onKeyUpStart);
+  document.getElementById('menu').style.display = 'flex';
   levels.forEach(level => {
     levelContainer.appendChild(createLevelMarkup(level.img, level.name));
   });
@@ -21,6 +22,7 @@ onKeyUpStart = (e) => {
     document.removeEventListener('keyup', onKeyUpStart);
     menuElement.style.display = 'none';
     startGame();
+    levelContainer.innerHTML = '';
   }
 }
 
