@@ -99,18 +99,21 @@ function switchToVideo(src) {
 }
 
 drawVideoFrame = () => {
-  ctx.drawImage(video, 0, 0, w, h);
+  try {
+    ctx.drawImage(video, 0, 0, w, h);
+  } catch (e) {
+    console.warn('video cannot be drawn to canvas', e);
+  }
 }
 
 function switchToLive() {
   videoMode = false;
+  JSMpegPlayer.play();
+  
   if (video) {
     video.remove();
     video = null;
   }
-
-  JSMpegPlayer.play();
-  video.stop();
 }
 
 videoTick = () => {
