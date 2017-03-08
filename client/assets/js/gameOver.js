@@ -1,5 +1,6 @@
 const gameOverScreen = document.getElementById('gameOver');
-const sadNoiseSignalingTheEndOfTheGame = new Audio('assets/sounds/game-over.mp3'),
+const sadNoiseSignalingTheEndOfTheGame = new Audio('assets/sounds/game-over.mp3');
+const database = firebase.database();
 
 gameOver = () => {
   trafficNoise.pause();
