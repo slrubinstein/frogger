@@ -57,18 +57,6 @@ onKeyUp = (e) => {
   }
 };
 
-newFrogPositionX = (position) => {
-  if (position >= 0 && position <= w) {
-    frogX = position;
-  }
-}
-
-newFrogPositionY = (position) => {
-  if (position >= 0 && position <= h) {
-    frogY = position;
-  }
-}
-
 startVideo = () => {
   var canvas = document.getElementById('canvas');
   // var url = 'ws://'+document.location.hostname+':8082/';
