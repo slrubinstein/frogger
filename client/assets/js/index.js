@@ -6,7 +6,8 @@ let color, prevImage,
     lives = 3,
     tickNo = 0,
     score = 0,
-    hiScore = 0;
+    hiScore = 0,
+    isGameOver;
 
 const
     // video = document.getElementById('videoElement'),
@@ -14,6 +15,7 @@ const
     game = document.getElementById('game'),
     currentScore = document.getElementById('currentScore'),
     gameHiScore = document.getElementById('hiScore'),
+    finalScore = document.getElementById('finalScore'),
     diff = document.getElementById('diff'),
     frog = new Image(),
     fly = new Image(),
@@ -36,12 +38,12 @@ ctx.mozImageSmoothingEnabled = false;
 ctx.webkitImageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
 
-let frogX = w/2 - 25,
-    frogY = h - 50,
-    frogWidth = 30,
-    frogHeight = 30,
-    flyX = Math.random() * w,
-    flyY = Math.random() * (playableBottom - playableTop) + playableTop;
+let frogX,
+    frogY,
+    frogWidth,
+    frogHeight,
+    flyX,
+    flyY;
 
 onKeyUp = (e) => {
   if (e.keyCode > 36 && e.keyCode < 41) {
@@ -76,12 +78,24 @@ displayHiScore = () => {
 }
 
 startGame = () => {
-  tick();
+  lives = 3;
+  setLives();
+  frogX = w/2 - 25;
+  frogY = h - 50;
+  frogWidth = 30;
+  frogHeight = 30;
+  flyX = Math.random() * w;
+  flyY = Math.random() * (playableBottom - playableTop) + playableTop;
   document.addEventListener('keyup', onKeyUp);
+  if (!isGameOver) {
+    tick();
+  }
+  isGameOver = false;
 }
 
 setLives = () => {
   gameLives.innerHTML = '';
+
   for (let i =0; i < lives; i++) {
     let img = document.createElement('img');
     img.src = 'assets/img/frog.png';
@@ -111,8 +125,7 @@ tick = () => {
     flyX = Math.random() * w,
     flyY = Math.random() * (playableBottom - playableTop) + playableTop;
     score += difficulty;
-    currentScore.innerHTML = parseInt(score, 10);
-    gameHiScore.innerHTML = Math.max(hiScore, parseInt(score));
+    setScore();
   }
   if (!(tickNo % 3)) msgDiffWorker();
 
@@ -120,12 +133,24 @@ tick = () => {
   window.requestAnimationFrame(tick);
 };
 
+setScore = () => {
+  currentScore.innerHTML = parseInt(score, 10);
+  finalScore.innerHTML = parseInt(score, 10);
+  hiScore = Math.max(hiScore, parseInt(score, 10));
+  gameHiScore.innerHTML = hiScore;
+}
+
 loseLife = () => {
   lives--;
 
   setLives();
-  currentScore.innerHTML = parseInt(score, 10);
-  gameHiScore.innerHTML = Math.max(hiScore, parseInt(score));
+  setScore();
+
+  if (lives <= 0) {
+    gameOver();
+    return;
+  }
+
   frogX = w/2 - 25;
   frogY = h - 50;
 }
