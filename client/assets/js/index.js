@@ -13,8 +13,8 @@ const
     game = document.getElementById('game'),
     gameScore = document.getElementById('gameScore'),
     diff = document.getElementById('diff'),
-    frog = document.getElementById('frog'),
-    fly = document.getElementById('fly'),
+    frog = new Image(),
+    fly = new Image(),
     body = document.querySelector('body'),
     gameLives = document.getElementById('gameLives'),
     ctx = canvas.getContext('2d'),
@@ -26,6 +26,9 @@ const
     splat = new Audio('assets/sounds/splat.wav'),
     diffWorker = new Worker('assets/js/diffWorker.js'),
     colorThief = new ColorThief();
+
+frog.src = 'assets/img/frog.png';
+fly.src = 'assets/img/fly.png';
 
 ctx.mozImageSmoothingEnabled = false;
 ctx.webkitImageSmoothingEnabled = false;
@@ -58,7 +61,6 @@ startVideo = () => {
 init = () => {
   setLives();
   startVideo();
-  tick();
 };
 
 startGame = () => {
@@ -78,7 +80,6 @@ setLives = () => {
 
 tick = () => {
   tickNo++;
-  // drawFrame();
   const isSplat = detectCollision();
   const isDelicious = detectFly();
 
@@ -104,7 +105,7 @@ tick = () => {
   if (!(tickNo % 20)) updateSwatch();
 
   drawGame();
-  setTimeout(tick, 50);
+  window.requestAnimationFrame(tick);
 };
 
 loseLife = () => {
@@ -162,10 +163,6 @@ detectFly = () => {
   return (Math.abs(frogX - flyX) < 20 && Math.abs(frogY - flyY) < 20);
 }
 
-// drawFrame = () => {
-//   ctx.drawImage(video, 0, 0, w, h);
-// };
-
 drawGame = () => {
   gctx.clearRect(0,0,w,h);
 
@@ -184,9 +181,6 @@ drawGame = () => {
   gctx.drawImage(fly, flyX, flyY, frogWidth, frogHeight)
 };
 
-// video.addEventListener('play', init, false);
-// window.addEventListener('resize', resize);
-document.addEventListener('keyup', onKeyUp);
 diffWorker.addEventListener('message', onDiffMessage);
 
 init();

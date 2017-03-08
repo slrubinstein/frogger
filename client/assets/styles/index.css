@@ -1,5 +1,13 @@
 body {
   font-family: 'Press Start 2P', cursive;
+  font-smooth: never;
+  -webkit-font-smoothing : none;
+}
+
+img, canvas {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
 }
 
 #swatch {
@@ -7,14 +15,11 @@ body {
   height: 40px;
 }
 
-#gameContainer canvas {
+#gameContainer canvas{
   position: absolute;
   left: 0;
   width: 100%;
   height: 100%;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -webkit-crisp-edges;
-  image-rendering: pixelated;
 }
 
 .gameStats {
@@ -60,7 +65,6 @@ body {
   background-color: rgba(0,0,0,0.4);
 }
 
-
 #title {
   font-size: 32px;
   margin-bottom: 26px;
@@ -92,7 +96,6 @@ body {
 .blink {
   animation: blink 1s infinite;
   font-size: 26px;
-  /*transform: translateX(25%);*/
   margin-bottom: 78px;
 }
 
