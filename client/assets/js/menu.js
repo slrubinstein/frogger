@@ -6,9 +6,9 @@ let activeLevel = 0;
 
 levels = [
   {img: 'level0.svg', name: 'Live', src: 'live'},
-  {img: 'level1.png', name: 'Manhattan', src: 'http://10.8.33.193:8000/vid1.mp4'},
-  {img: 'level2.png', name: 'Brooklyn', src: 'http://10.8.33.193:8000/vid2.mp4'},
-  {img: 'level3.png', name: 'Bronx', src: './assets/vid/level3.mov'},
+  {img: 'level1.png', name: 'Manhattan', src: 'http://10.8.33.193:8000/5pm.mp4'},
+  {img: 'level2.png', name: 'Brooklyn', src: 'http://10.8.33.193:8000/510pm.mp4'},
+  {img: 'level3.png', name: 'Bronx', src: 'http://10.8.33.193:8000/night.mp4'},
 ];
 
 
