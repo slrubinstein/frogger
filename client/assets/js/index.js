@@ -1,6 +1,6 @@
 let color, prevImage, prevFrogX, prevFrogY,
-    w = 1200,
-    h = 800,
+    w = 1800,
+    h = 850,
     fillColor = 'lime',
     lives = 3,
     tickNo = 0,
@@ -35,9 +35,9 @@ const
 frog.src = 'assets/img/frog.png';
 fly.src = 'assets/img/fly.gif';
 
-ctx.mozImageSmoothingEnabled = false;
-ctx.webkitImageSmoothingEnabled = false;
-ctx.imageSmoothingEnabled = false;
+gctx.mozImageSmoothingEnabled = false;
+gctx.webkitImageSmoothingEnabled = false;
+gctx.imageSmoothingEnabled = false;
 
 let frogX,
     frogY,
@@ -190,23 +190,6 @@ onDiffMessage = ({ data }) => {
   const imageData = new ImageData(data.diff, 200+frogWidth, 200+frogHeight);
   dctx.putImageData(imageData, data.prevX-100, data.prevY-100);
 };
-
-/**
- * This collision method works better when visibility is generally good and
- * the feed is stable
- */
-detectCollision = () => {
-  const data = dctx.getImageData(frogX, frogY, frogWidth, frogHeight).data;
-  let sum = 0;
-  for (let i=0; i<data.length; i+=8) {
-    sum+=data[i];
-  }
-  return sum > 10000;
-}
-
-detectFly = () => {
-  return (Math.abs(frogX - flyX) < 20 && Math.abs(frogY - flyY) < 20);
-}
 
 drawGame = () => {
   gctx.clearRect(0,0,w,h);

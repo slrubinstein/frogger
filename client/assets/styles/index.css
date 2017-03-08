@@ -4,7 +4,7 @@ body {
   -webkit-font-smoothing : none;
 }
 
-img, canvas {
+img, #game {
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-crisp-edges;
   image-rendering: pixelated;
