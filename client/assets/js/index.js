@@ -1,7 +1,6 @@
 let color, prevImage, prevFrogX, prevFrogY,
     w = 1200,
     h = 800,
-    difficulty = 0,
     fillColor = 'lime',
     lives = 3,
     tickNo = 0,
@@ -133,12 +132,11 @@ tick = () => {
     fillColor = 'lime';
   }
 
-
   if (isDelicious) {
     ribbit.play();
     flyX = Math.random() * w,
     flyY = Math.random() * (playableBottom - playableTop) + playableTop;
-    score += difficulty;
+    score += 10;
     setScore();
   }
 
@@ -191,7 +189,6 @@ msgDiffWorker = () => {
 onDiffMessage = ({ data }) => {
   const imageData = new ImageData(data.diff, 200+frogWidth, 200+frogHeight);
   dctx.putImageData(imageData, data.prevX-100, data.prevY-100);
-  difficulty = (difficulty + data.difficulty * 40) / 2;
 };
 
 /**
@@ -222,7 +219,6 @@ drawGame = () => {
   }
 
   gctx.fillStyle=fillColor;
-  gctx.fillRect( 20, 10, difficulty, 30);
   gctx.drawImage(frog, frogX, frogY, frogWidth, frogHeight)
   gctx.drawImage(fly, flyX, flyY, frogWidth, frogHeight)
 };
