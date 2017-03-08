@@ -20,12 +20,7 @@ initMenu = () => {
 }
 
 onKeyUpStart = (e) => {
-  if (e.keyCode === 83 /* S */) {
-    document.removeEventListener('keyup', onKeyUpStart);
-    menuElement.style.display = 'none';
-    startGame();
-    levelContainer.innerHTML = '';
-  }
+  if (e.keyCode === 83) showInstructions(); //S
   else if (e.keyCode > 36 && e.keyCode < 41) {
     e.preventDefault();
     switch (e.keyCode) {
@@ -34,10 +29,21 @@ onKeyUpStart = (e) => {
       case 37: activeLevel--; break;
       case 39: activeLevel++; break;
     }
-    activeLevel%=4;
+    activeLevel = Math.abs(activeLevel%4);
     document.querySelector('.active').classList.remove('active');
     levelContainer.children[activeLevel].classList.add('active');
   }
+}
+
+showInstructions = (e) => {
+  document.removeEventListener('keyup', onKeyUpStart);
+  menuElement.style.display = 'none';
+  instructions.style.display = 'block';
+  setTimeout(() => {
+    instructions.style.display = 'none';
+    startGame();
+  }, 3000)
+  levelContainer.innerHTML = '';
 }
 
 createLevelMarkup = (img, name) => {
