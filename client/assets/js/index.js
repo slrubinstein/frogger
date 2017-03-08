@@ -34,7 +34,7 @@ const
     colorThief = new ColorThief();
 
 frog.src = 'assets/img/frog.png';
-fly.src = 'assets/img/fly.png';
+fly.src = 'assets/img/fly.gif';
 
 ctx.mozImageSmoothingEnabled = false;
 ctx.webkitImageSmoothingEnabled = false;
@@ -83,9 +83,9 @@ startGame = () => {
   lives = 3;
   setLives();
   frogX = w/2 - 25;
-  frogY = h - 50;
-  frogWidth = 30;
-  frogHeight = 30;
+  frogY = h - 45;
+  frogWidth = 70;
+  frogHeight = 60;
   flyX = Math.random() * w;
   flyY = Math.random() * (playableBottom - playableTop) + playableTop;
   document.addEventListener('keyup', onKeyUp);
@@ -160,11 +160,11 @@ loseLife = () => {
 
 msgDiffWorker = () => {
   if (prevFrogX && prevFrogY && prevImage) {
-    const currentImage = ctx.getImageData(prevFrogX - 100, prevFrogY - 100, 200 + frogWidth, 200 + frogWidth).data;
+    const currentImage = ctx.getImageData(prevFrogX - 100, prevFrogY - 100, 200 + frogWidth, 200 + frogHeight).data;
     diffWorker.postMessage({
       'img1data': currentImage,
       'img2data': prevImage,
-      'diff': ctx.createImageData(200+frogWidth, 200+frogWidth).data,
+      'diff': ctx.createImageData(200+frogWidth, 200+frogHeight).data,
       'width': 200+frogWidth,
       'height': 200+frogWidth,
       'prevX': prevFrogX,
@@ -173,11 +173,11 @@ msgDiffWorker = () => {
   }
   prevFrogX = frogX;
   prevFrogY = frogY;
-  prevImage = ctx.getImageData(frogX - 100, frogY - 100, 200+frogWidth, 200 + frogWidth).data;
+  prevImage = ctx.getImageData(frogX - 100, frogY - 100, 200+frogWidth, 200 + frogHeight).data;
 };
 
 onDiffMessage = ({ data }) => {
-  const imageData = new ImageData(data.diff, 200+frogWidth, 200+frogWidth);
+  const imageData = new ImageData(data.diff, 200+frogWidth, 200+frogHeight);
   dctx.putImageData(imageData, data.prevX-100, data.prevY-100);
   difficulty = (difficulty + data.difficulty * 40) / 2;
 };
