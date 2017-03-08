@@ -38,11 +38,11 @@ onKeyUpStart = (e) => {
 showInstructions = (e) => {
   document.removeEventListener('keyup', onKeyUpStart);
   menuElement.style.display = 'none';
-  instructions.style.display = 'block';
+  instructions.style.display = 'flex';
   setTimeout(() => {
     instructions.style.display = 'none';
     startGame();
-  }, 3000)
+  }, 2000)
   levelContainer.innerHTML = '';
 }
 

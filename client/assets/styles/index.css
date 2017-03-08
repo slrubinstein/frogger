@@ -113,7 +113,6 @@ img, canvas {
   height: 78px;
 }
 
-
 .arrow {
   display: none;
   width: 30px;
@@ -126,10 +125,10 @@ img, canvas {
   display: block;
 }
 
-
 #menu {
   font-size: 22px;
 }
+
 #gameOver {
   display: none;
 }
@@ -139,6 +138,7 @@ img, canvas {
 }
 
 .textContainer {
+  display: flex;
   flex-flow: column;
   align-items:center;
   color: red;
