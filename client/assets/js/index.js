@@ -51,13 +51,25 @@ onKeyUp = (e) => {
   if (e.keyCode > 36 && e.keyCode < 41) {
     e.preventDefault();
     switch (e.keyCode) {
-      case 38: frogY-=30; break;
-      case 40: frogY+=30; break;
-      case 37: frogX-=30; break;
-      case 39: frogX+=30; break;
+      case 38: newFrogPositionY(frogY - 30); break;
+      case 40: newFrogPositionY(frogY + 30); break;
+      case 37: newFrogPositionX(frogX - 30); break;
+      case 39: newFrogPositionX(frogX + 30); break;
     }
   }
 };
+
+newFrogPositionX = (position) => {
+  if (position >= 0 && position <= w) {
+    frogX = position;
+  }
+}
+
+newFrogPositionY = (position) => {
+  if (position >= 0 && position <= h) {
+    frogY = position;
+  }
+}
 
 startVideo = () => {
   var canvas = document.getElementById('canvas');
