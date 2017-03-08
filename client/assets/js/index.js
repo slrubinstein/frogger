@@ -84,6 +84,8 @@ function switchToVideo(src) {
   if (video) {
     video.remove();
     video = null;
+  } else {
+    JSMpegPlayer.stop();
   }
 
   video = document.createElement('video');
@@ -92,7 +94,6 @@ function switchToVideo(src) {
   video.loop = true;
   document.body.appendChild(video);
   video.play();
-  JSMpegPlayer.stop();
 
   videoMode = true;
   videoTick();
@@ -109,7 +110,7 @@ drawVideoFrame = () => {
 function switchToLive() {
   videoMode = false;
   JSMpegPlayer.play();
-  
+
   if (video) {
     video.remove();
     video = null;
