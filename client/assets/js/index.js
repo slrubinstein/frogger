@@ -6,7 +6,12 @@ let color, prevImage, prevFrogX, prevFrogY,
     tickNo = 0,
     score = 0,
     hiScore = 0,
-    isGameOver;
+    isGameOver,
+    lastTick = Date.now(),
+    startTime = null,
+    videoMode = false,
+    JSMpegPlayer = null
+    video = null;
 
 const
     // video = document.getElementById('videoElement'),
@@ -18,7 +23,6 @@ const
     diff = document.getElementById('diff'),
     frog = new Image(),
     fly = new Image(),
-    deadFrog = new Image(),
     body = document.querySelector('body'),
     gameLives = document.getElementById('gameLives'),
     ctx = canvas.getContext('2d'),
@@ -35,7 +39,6 @@ const
 
 frog.src = 'assets/img/frog.png';
 fly.src = 'assets/img/fly.gif';
-deadFrog.src = 'assets/img/deadFrog.png';
 
 gctx.mozImageSmoothingEnabled = false;
 gctx.webkitImageSmoothingEnabled = false;
@@ -43,21 +46,19 @@ gctx.imageSmoothingEnabled = false;
 
 let frogX,
     frogY,
-    frogWidth = 50,
-    frogHeight = 40,
+    frogWidth,
+    frogHeight,
     flyX,
-    flyY,
-    deadFrogX,
-    deadFrogY;
+    flyY;
 
 onKeyUp = (e) => {
   if (e.keyCode > 36 && e.keyCode < 41) {
     e.preventDefault();
     switch (e.keyCode) {
-      case 38: newFrogPositionY(frogY - frogHeight); break;
-      case 40: newFrogPositionY(frogY + frogHeight); break;
-      case 37: newFrogPositionX(frogX - frogWidth); break;
-      case 39: newFrogPositionX(frogX + frogWidth); break;
+      case 38: newFrogPositionY(frogY - 30); break;
+      case 40: newFrogPositionY(frogY + 30); break;
+      case 37: newFrogPositionX(frogX - 30); break;
+      case 39: newFrogPositionX(frogX + 30); break;
     }
   }
 };
@@ -78,12 +79,53 @@ startVideo = () => {
   var canvas = document.getElementById('canvas');
   // var url = 'ws://'+document.location.hostname+':8082/';
   var url = 'ws://10.8.33.193:8082/';
-  var player = new JSMpeg.Player(url, {
+  JSMpegPlayer = new JSMpeg.Player(url, {
     canvas: canvas,
     disableGl: true,
     videoBufferSize: 1200 * 1200
   });
 }
+
+function switchToVideo(src) {
+  if (video) {
+    video.remove();
+    video = null;
+  }
+
+  video = document.createElement('video');
+  video.src = src;
+  video.style.visibility = 'hidden';
+  document.body.appendChild(video);
+  video.play();
+  JSMpegPlayer.stop();
+
+  videoMode = true;
+  videoTick();
+}
+
+drawVideoFrame = () => {
+  ctx.drawImage(video, 0, 0, w, h);
+}
+
+function switchToLive() {
+  videoMode = false;
+  if (video) {
+    video.remove();
+    video = null;
+  }
+
+  JSMpegPlayer.play();
+  video.stop();
+}
+
+videoTick = () => {
+  drawVideoFrame();
+
+  if (videoMode) {
+    window.requestAnimationFrame(videoTick);
+  }
+}
+
 
 init = () => {
   setLives();
@@ -100,6 +142,8 @@ startGame = () => {
   setLives();
   frogX = w/2 - 25;
   frogY = h - 45;
+  frogWidth = 70;
+  frogHeight = 60;
   flyX = Math.random() * w;
   flyY = Math.random() * (playableBottom - playableTop) + playableTop;
   document.addEventListener('keyup', onKeyUp);
@@ -121,6 +165,10 @@ setLives = () => {
 }
 
 tick = () => {
+  if (startTime === null) {
+    startTime = Date.now();
+  }
+
   tickNo++;
   const isSplat = detectCollision();
   const isDelicious = detectFly();
@@ -146,6 +194,9 @@ tick = () => {
   msgDiffWorker();
 
   drawGame();
+  console.log('FPS', 1 / ((performance.now() - lastTick) / 1000), tickNo / ((Date.now() - startTime) / 1000) );
+  console.log(tickNo);
+  lastTick = performance.now();
   window.requestAnimationFrame(tick);
 };
 
@@ -161,23 +212,14 @@ loseLife = () => {
 
   setLives();
   setScore();
-  deadFrogX = frogX;
-  deadFrogY = frogY;
 
   if (lives <= 0) {
     gameOver();
     return;
   }
 
-  frog.src = '';
-  setTimeout(() => {
-    frog.src = 'assets/img/frog.png';
-    deadFrogX = null;
-    deadFrogY = null;
-  }, 500);
   frogX = w/2 - 25;
   frogY = h - 50;
-
 }
 
 msgDiffWorker = () => {
@@ -215,7 +257,6 @@ drawGame = () => {
 
   gctx.fillStyle=fillColor;
   gctx.drawImage(frog, frogX, frogY, frogWidth, frogHeight)
-  gctx.drawImage(deadFrog, deadFrogX, deadFrogY, frogWidth, frogHeight)
   gctx.drawImage(fly, flyX, flyY, frogWidth, frogHeight)
 };
 

@@ -4,10 +4,10 @@ const beep = new Audio('assets/sounds/beep2.mp3');
 let activeLevel = 0;
 
 levels = [
-  {img: 'level0.svg', name: 'Live'},
-  {img: 'level1.png', name: 'Manhattan', src: 'lvl1.mov'},
-  {img: 'level2.png', name: 'Brooklyn', src: 'lvl2.mov'},
-  {img: 'level3.png', name: 'Bronx', src: 'lvl3.mov'},
+  {img: 'level0.svg', name: 'Live', src: 'live'},
+  {img: 'level1.png', name: 'Manhattan', src: './assets/vid/level1.mov'},
+  {img: 'level2.png', name: 'Brooklyn', src: './assets/vid/level2.mov'},
+  {img: 'level3.png', name: 'Bronx', src: './assets/vid/level3.mov'},
 ];
 
 
@@ -31,6 +31,11 @@ onKeyUpStart = (e) => {
       case 39: activeLevel++; break;
     }
     activeLevel = Math.abs(activeLevel%4);
+    if (levels[activeLevel].src === 'live' && videoMode) {
+      switchToLive();
+    } else {
+      switchToVideo(levels[activeLevel].src);
+    }
     document.querySelector('.active').classList.remove('active');
     levelContainer.children[activeLevel].classList.add('active');
     horn.play();
