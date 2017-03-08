@@ -7,7 +7,7 @@ gameOver = () => {
   frogX = null;
   frogY = null;
   sadNoiseSignalingTheEndOfTheGame.play();
-  document.removeEventListener('keyup', onKeyUp);
+  document.removeEventListener('keydown', onKeyDown);
   document.addEventListener('keyup', onKeyUpRestart);
 }
 

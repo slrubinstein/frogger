@@ -12,8 +12,8 @@ const ctx = canvas.getContext('2d'),
   gctx = game.getContext('2d'),
   dctx = diff.getContext('2d');
 
-const frogWidth = 70,
-  frogHeight = 60,
+const frogWidth = 60,
+  frogHeight = 50,
   w = 1800,
   h = 850,
   playableTop = h/8,
@@ -50,14 +50,21 @@ gctx.mozImageSmoothingEnabled = false;
 gctx.webkitImageSmoothingEnabled = false;
 gctx.imageSmoothingEnabled = false;
 
-onKeyUp = (e) => {
+let keyDownTimer = null;
+
+onKeyDown = (e) => {
   if (e.keyCode > 36 && e.keyCode < 41) {
     e.preventDefault();
-    switch (e.keyCode) {
-      case 38: newFrogPositionY(frogY - frogHeight); break;
-      case 40: newFrogPositionY(frogY + frogHeight); break;
-      case 37: newFrogPositionX(frogX - frogWidth); break;
-      case 39: newFrogPositionX(frogX + frogWidth); break;
+    if (!keyDownTimer) {
+      keyDownTimer = setTimeout(() => {
+        keyDownTimer = null;
+      }, 100);
+      switch (e.keyCode) {
+        case 38: newFrogPositionY(frogY - frogHeight); break;
+        case 40: newFrogPositionY(frogY + frogHeight); break;
+        case 37: newFrogPositionX(frogX - frogWidth); break;
+        case 39: newFrogPositionX(frogX + frogWidth); break;
+      }
     }
   }
 };
@@ -126,10 +133,9 @@ displayHiScore = () => gameHiScore.innerHTML = hiScore;
 startGame = () => {
   lives = 3;
   setLives();
-  frogX = w/2 - frogWidth/2;
-  frogY = h - frogHeight;
+  setFrogToStartPosition();
   setFly();
-  document.addEventListener('keyup', onKeyUp);
+  document.addEventListener('keydown', onKeyDown);
   if (!isGameOver) tick();
   isGameOver = false;
 
@@ -195,6 +201,11 @@ setScore = () => {
   gameHiScore.innerHTML = hiScore;
 }
 
+setFrogToStartPosition = () => {
+  frogX = w/2 - frogWidth/2;
+  frogY = h - frogHeight;
+}
+
 loseLife = () => {
   lives--;
 
@@ -215,8 +226,7 @@ loseLife = () => {
     deadFrogX = null;
     deadFrogY = null;
   }, 500);
-  frogX = w/2 - 25;
-  frogY = h - 50;
+  setFrogToStartPosition();
 }
 
 msgDiffWorker = () => {

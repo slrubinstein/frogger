@@ -8,7 +8,7 @@ detectCollision = () => {
   for (let i=0; i<data.length; i+=8) {
     sum+=data[i];
   }
-  return sum > 10000;
+  return sum > 1000;
 }
 
 detectFly = () => {
@@ -22,7 +22,7 @@ newFrogPositionX = (position) => {
 }
 
 newFrogPositionY = (position) => {
-  if (position >= 0 && position <= h) {
+  if (position >= frogHeight && position <= h - frogHeight) {
     frogY = position;
   }
 }
