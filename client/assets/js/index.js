@@ -1,4 +1,4 @@
-let color, prevImage,
+let color, prevImage, prevFrogX, prevFrogY,
     w = 1920,
     h = 1080,
     difficulty = 0,
@@ -129,7 +129,8 @@ tick = () => {
     score += difficulty;
     setScore();
   }
-  if (!(tickNo % 3)) msgDiffWorker();
+
+  msgDiffWorker();
 
   drawGame();
   window.requestAnimationFrame(tick);
@@ -158,22 +159,26 @@ loseLife = () => {
 }
 
 msgDiffWorker = () => {
-  const currentImage = ctx.getImageData(0, 0, w, h).data;
-  if (prevImage) {
+  if (prevFrogX && prevFrogY && prevImage) {
+    const currentImage = ctx.getImageData(prevFrogX - 100, prevFrogY - 100, 200 + frogWidth, 200 + frogWidth).data;
     diffWorker.postMessage({
       'img1data': currentImage,
       'img2data': prevImage,
-      'diff': ctx.createImageData(w, h).data,
-      'width': w,
-      'height': h
+      'diff': ctx.createImageData(200+frogWidth, 200+frogWidth).data,
+      'width': 200+frogWidth,
+      'height': 200+frogWidth,
+      'prevX': prevFrogX,
+      'prevY': prevFrogY
     });
   }
-  prevImage = currentImage;
+  prevFrogX = frogX;
+  prevFrogY = frogY;
+  prevImage = ctx.getImageData(frogX - 100, frogY - 100, 200+frogWidth, 200 + frogWidth).data;
 };
 
 onDiffMessage = ({ data }) => {
-  const imageData = new ImageData(data.diff, w, h);
-  dctx.putImageData(imageData, 0, 0)
+  const imageData = new ImageData(data.diff, 200+frogWidth, 200+frogWidth);
+  dctx.putImageData(imageData, data.prevX-100, data.prevY-100);
   difficulty = (difficulty + data.difficulty * 40) / 2;
 };
 
@@ -205,8 +210,6 @@ drawGame = () => {
   }
 
   gctx.fillStyle=fillColor;
-  gctx.fillRect(0, playableBottom, w, 10); // start line
-  gctx.fillRect(0, playableTop, w, 10); // stop line
   gctx.fillRect( 20, 10, difficulty, 30);
   gctx.drawImage(frog, frogX, frogY, frogWidth, frogHeight)
   gctx.drawImage(fly, flyX, flyY, frogWidth, frogHeight)

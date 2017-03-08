@@ -7,7 +7,9 @@ self.addEventListener('message', function({ data }) {
 
   self.postMessage({
     'diff': data.diff,
-    'difficulty': diff/35000
+    'difficulty': diff/35000,
+    'prevX': data.prevX,
+    'prevY': data.prevY
   });
 
 }, false);
