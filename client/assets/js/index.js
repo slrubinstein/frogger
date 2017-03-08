@@ -1,37 +1,41 @@
-let color, prevImage, prevFrogX, prevFrogY,
-    w = 1800,
-    h = 850,
-    fillColor = 'lime',
-    lives = 3,
-    tickNo = 0,
-    score = 0,
-    hiScore = 0,
-    isGameOver;
-
 const
-    // video = document.getElementById('videoElement'),
-    canvas = document.getElementById('canvas'),
-    game = document.getElementById('game'),
-    currentScore = document.getElementById('currentScore'),
-    gameHiScore = document.getElementById('hiScore'),
-    finalScore = document.getElementById('finalScore'),
-    diff = document.getElementById('diff'),
-    frog = new Image(),
-    fly = new Image(),
-    deadFrog = new Image(),
-    body = document.querySelector('body'),
-    gameLives = document.getElementById('gameLives'),
-    ctx = canvas.getContext('2d'),
-    gctx = game.getContext('2d'),
-    dctx = diff.getContext('2d'),
-    playableTop = h/8,
-    playableBottom = h/4*3,
-    ribbit = new Audio('assets/sounds/frog-ribbet2.wav'),
-    splat = new Audio('assets/sounds/splat.wav'),
-    horn = new Audio('assets/sounds/beep.wav'),
-    startCar = new Audio('assets/sounds/StartCar.wav'),
-    diffWorker = new Worker('assets/js/diffWorker.js'),
-    colorThief = new ColorThief();
+  // video = document.getElementById('videoElement'),
+  canvas = document.getElementById('canvas'),
+  game = document.getElementById('game'),
+  currentScore = document.getElementById('currentScore'),
+  gameHiScore = document.getElementById('hiScore'),
+  finalScore = document.getElementById('finalScore'),
+  diff = document.getElementById('diff'),
+  body = document.querySelector('body'),
+  gameLives = document.getElementById('gameLives');
+
+const ctx = canvas.getContext('2d'),
+  gctx = game.getContext('2d'),
+  dctx = diff.getContext('2d');
+
+const frogWidth = 50,
+  w = 1800,
+  h = 850,
+  frogHeight = 40,
+  playableTop = h/8,
+  playableBottom = h/4*3,
+  fillColor = 'lime';
+
+const ribbit = new Audio('assets/sounds/frog-ribbet2.wav'),
+  splat = new Audio('assets/sounds/splat.wav'),
+  horn = new Audio('assets/sounds/beep.wav'),
+  startCar = new Audio('assets/sounds/StartCar.wav'),
+  diffWorker = new Worker('assets/js/diffWorker.js');
+
+const frog = new Image(),
+  fly = new Image(),
+  deadFrog = new Image(),
+  colorThief = new ColorThief();
+
+let frogX, frogY, flyX, flyY, deadFrogX, deadFrogY;
+let color, prevImage, prevFrogX, prevFrogY;
+let lives = 3, score = 0, hiScore = 0, tickNo = 0;
+let isGameOver = false;
 
 frog.src = 'assets/img/frog.png';
 fly.src = 'assets/img/fly.gif';
@@ -40,15 +44,6 @@ deadFrog.src = 'assets/img/deadFrog.png';
 gctx.mozImageSmoothingEnabled = false;
 gctx.webkitImageSmoothingEnabled = false;
 gctx.imageSmoothingEnabled = false;
-
-let frogX,
-    frogY,
-    frogWidth = 50,
-    frogHeight = 40,
-    flyX,
-    flyY,
-    deadFrogX,
-    deadFrogY;
 
 onKeyUp = (e) => {
   if (e.keyCode > 36 && e.keyCode < 41) {
