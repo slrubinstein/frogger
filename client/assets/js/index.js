@@ -1,6 +1,6 @@
 let color, prevImage, prevFrogX, prevFrogY,
-    w = 1200,
-    h = 800,
+    w = 1800,
+    h = 850,
     difficulty = 0,
     fillColor = 'lime',
     lives = 3,
