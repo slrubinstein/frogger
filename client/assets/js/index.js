@@ -1,5 +1,4 @@
 const
-  // video = document.getElementById('videoElement'),
   canvas = document.getElementById('canvas'),
   game = document.getElementById('game'),
   currentScore = document.getElementById('currentScore'),
@@ -13,13 +12,12 @@ const ctx = canvas.getContext('2d'),
   gctx = game.getContext('2d'),
   dctx = diff.getContext('2d');
 
-const frogWidth = 50,
+const frogWidth = 70,
+  frogHeight = 60,
   w = 1800,
   h = 850,
-  frogHeight = 40,
   playableTop = h/8,
-  playableBottom = h/4*3,
-  fillColor = 'lime';
+  playableBottom = h/4*3;
 
 const ribbit = new Audio('assets/sounds/frog-ribbet2.wav'),
   splat = new Audio('assets/sounds/splat.wav'),
@@ -44,26 +42,20 @@ let lastTick = Date.now(),
 
 frog.src = 'assets/img/frog.png';
 fly.src = 'assets/img/fly.gif';
+deadFrog.src = 'assets/img/deadFrog.png';
 
 gctx.mozImageSmoothingEnabled = false;
 gctx.webkitImageSmoothingEnabled = false;
 gctx.imageSmoothingEnabled = false;
 
-let frogX,
-    frogY,
-    frogWidth,
-    frogHeight,
-    flyX,
-    flyY;
-
 onKeyUp = (e) => {
   if (e.keyCode > 36 && e.keyCode < 41) {
     e.preventDefault();
     switch (e.keyCode) {
-      case 38: newFrogPositionY(frogY - 30); break;
-      case 40: newFrogPositionY(frogY + 30); break;
-      case 37: newFrogPositionX(frogX - 30); break;
-      case 39: newFrogPositionX(frogX + 30); break;
+      case 38: newFrogPositionY(frogY - frogHeight); break;
+      case 40: newFrogPositionY(frogY + frogHeight); break;
+      case 37: newFrogPositionX(frogX - frogWidth); break;
+      case 39: newFrogPositionX(frogX + frogWidth); break;
     }
   }
 };
@@ -133,8 +125,6 @@ startGame = () => {
   setLives();
   frogX = w/2 - 25;
   frogY = h - 45;
-  frogWidth = 70;
-  frogHeight = 60;
   flyX = Math.random() * w;
   flyY = Math.random() * (playableBottom - playableTop) + playableTop;
   document.addEventListener('keyup', onKeyUp);
@@ -164,12 +154,7 @@ tick = () => {
 
   if (isSplat) {
     loseLife();
-  }
-  if (fillColor === 'lime' && isSplat) {
-    fillColor = 'red';
     splat.play();
-  } else if (fillColor === 'red' && !isSplat) {
-    fillColor = 'lime';
   }
 
   if (isDelicious) {
@@ -201,6 +186,8 @@ loseLife = () => {
 
   setLives();
   setScore();
+  deadFrogX = frogX;
+  deadFrogY = frogY;
 
   if (lives <= 0) {
     gameOver();
@@ -251,8 +238,8 @@ drawGame = () => {
     gctx.fillRect(40,0,40,40);
   }
 
-  gctx.fillStyle=fillColor;
   gctx.drawImage(frog, frogX, frogY, frogWidth, frogHeight)
+  gctx.drawImage(deadFrog, deadFrogX, deadFrogY, frogWidth, frogHeight)
   gctx.drawImage(fly, flyX, flyY, frogWidth, frogHeight)
 };
 
