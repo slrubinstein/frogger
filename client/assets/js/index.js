@@ -74,9 +74,7 @@ init = () => {
   displayHiScore();
 };
 
-displayHiScore = () => {
-  gameHiScore.innerHTML = hiScore;
-}
+displayHiScore = () => gameHiScore.innerHTML = hiScore;
 
 startGame = () => {
   lives = 3;
@@ -86,9 +84,7 @@ startGame = () => {
   flyX = Math.random() * w;
   flyY = Math.random() * (playableBottom - playableTop) + playableTop;
   document.addEventListener('keyup', onKeyUp);
-  if (!isGameOver) {
-    tick();
-  }
+  if (!isGameOver) tick();
   isGameOver = false;
 }
 
@@ -153,6 +149,7 @@ loseLife = () => {
   }
 
   frog.src = '';
+
   setTimeout(() => {
     frog.src = 'assets/img/frog.png';
     deadFrogX = null;
