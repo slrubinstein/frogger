@@ -126,10 +126,9 @@ displayHiScore = () => gameHiScore.innerHTML = hiScore;
 startGame = () => {
   lives = 3;
   setLives();
-  frogX = w/2 - 25;
-  frogY = h - 45;
-  flyX = Math.random() * w;
-  flyY = Math.random() * (playableBottom - playableTop) + playableTop;
+  frogX = w/2 - frogWidth/2;
+  frogY = h - frogHeight;
+  setFly();
   document.addEventListener('keyup', onKeyUp);
   if (!isGameOver) tick();
   isGameOver = false;
@@ -140,6 +139,12 @@ startGame = () => {
     video.play();
   }
   trafficNoise.play();
+}
+
+setFly = () => {
+  flyX = Math.round(Math.random() * w / frogWidth) * frogWidth + frogWidth/2;
+  flyY = Math.round(Math.random() * ((playableBottom - playableTop) + playableTop) / frogHeight) * frogHeight;
+
 }
 
 setLives = () => {
@@ -169,8 +174,7 @@ tick = () => {
 
   if (isDelicious) {
     ribbit.play();
-    flyX = Math.random() * w,
-    flyY = Math.random() * (playableBottom - playableTop) + playableTop;
+    setFly();
     score += 10;
     setScore();
   }
