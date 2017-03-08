@@ -28,6 +28,8 @@ const
     playableBottom = h/4*3,
     ribbit = new Audio('assets/sounds/frog-ribbet2.wav'),
     splat = new Audio('assets/sounds/splat.wav'),
+    horn = new Audio('assets/sounds/beep.wav'),
+    startCar = new Audio('assets/sounds/StartCar.wav'),
     diffWorker = new Worker('assets/js/diffWorker.js'),
     colorThief = new ColorThief();
 

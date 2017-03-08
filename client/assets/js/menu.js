@@ -32,6 +32,7 @@ onKeyUpStart = (e) => {
     activeLevel = Math.abs(activeLevel%4);
     document.querySelector('.active').classList.remove('active');
     levelContainer.children[activeLevel].classList.add('active');
+    horn.play();
   }
 }
 
@@ -40,6 +41,7 @@ showInstructions = (e) => {
   menuElement.style.display = 'none';
   instructions.style.display = 'block';
   setTimeout(() => {
+    startCar.play();
     instructions.style.display = 'none';
     startGame();
   }, 3000)
