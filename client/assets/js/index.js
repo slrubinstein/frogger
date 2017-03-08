@@ -80,6 +80,7 @@ function switchToVideo(src) {
   video = document.createElement('video');
   video.src = src;
   video.style.visibility = 'hidden';
+  video.loop = true;
   document.body.appendChild(video);
   video.play();
   JSMpegPlayer.stop();
@@ -130,6 +131,12 @@ startGame = () => {
   document.addEventListener('keyup', onKeyUp);
   if (!isGameOver) tick();
   isGameOver = false;
+
+  if (videoMode && video) {
+    video.pause();
+    video.currentTime = 0;
+    video.play();
+  }
 }
 
 setLives = () => {
@@ -168,8 +175,8 @@ tick = () => {
   msgDiffWorker();
 
   drawGame();
-  console.log('FPS', 1 / ((performance.now() - lastTick) / 1000), tickNo / ((Date.now() - startTime) / 1000) );
-  console.log(tickNo);
+  // console.log('FPS', 1 / ((performance.now() - lastTick) / 1000), tickNo / ((Date.now() - startTime) / 1000) );
+  // console.log(tickNo);
   lastTick = performance.now();
   window.requestAnimationFrame(tick);
 };
