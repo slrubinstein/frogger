@@ -48,35 +48,30 @@ body {
   padding: 0 6px;
 }
 
-.skrim:before {
-  background-color: black;
-  content: '';
-  height: 100%;
-  opacity: .5;
-  position: absolute;
-  width: 100%;
-  z-index: 1;
-}
-
 #menu {
-  align-items: center;
-  align-content: center;
+  display: flex;
+  flex-flow: column;
+  align-items:center;
   color: red;
-  display: none;
-  position: absolute;
   text-transform: uppercase;
-  transform: translate(50%, 50%);
   z-index: 2;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.4);
 }
 
-#menu.visible {
-  display: block;
-}
 
 #title {
-  display: inline-block;
-  font-size: 78px;
+  font-size: 32px;
   margin-bottom: 26px;
+}
+
+#title h1 {
+  display: inline;
+}
+
+#title img {
+  margin-top: 10px;
 }
 
 @keyframes blink {
@@ -94,11 +89,27 @@ body {
   }
 }
 
-#pressS {
+.blink {
   animation: blink 1s infinite;
   font-size: 26px;
-  transform: translateX(25%);
+  /*transform: translateX(25%);*/
   margin-bottom: 78px;
+}
+
+#levels {
+  width: 50%;
+  max-width: 500px;
+}
+
+.level {
+  width: 40%;
+  margin: 20px;
+  display: inline-block;
+  margin-left: 5%;
+}
+
+.levelImg {
+  width: 100%;
 }
 
 #menuFrog {
