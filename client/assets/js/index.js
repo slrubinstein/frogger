@@ -115,7 +115,6 @@ tick = () => {
     gameHiScore.innerHTML = Math.max(hiScore, parseInt(score));
   }
   if (!(tickNo % 3)) msgDiffWorker();
-  if (!(tickNo % 20)) updateSwatch();
 
   drawGame();
   window.requestAnimationFrame(tick);
@@ -149,15 +148,6 @@ onDiffMessage = ({ data }) => {
   const imageData = new ImageData(data.diff, w, h);
   dctx.putImageData(imageData, 0, 0)
   difficulty = (difficulty + data.difficulty * 40) / 2;
-};
-
-updateSwatch = () => {
-  if (!canvas) return;
-  const sampleCanvas = document.createElement('canvas');
-  const sctx = sampleCanvas.getContext('2d');
-  sctx.putImageData(
-    ctx.getImageData(0,playableBottom,w,playableTop-playableBottom), 0, 0);
-  color = colorThief.getPalette(sampleCanvas);
 };
 
 /**
