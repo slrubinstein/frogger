@@ -8,8 +8,6 @@ class Player {
     this.posX = this.startingX = startingX;
     this.posY = this.startingY = startingY;
     this.deadX = this.deadY = null;
-    this.flyX = this.getFlyX();
-    this.flyY = this.getFlyY();
 
     this.lives = 3;
     this.score = 0;
@@ -47,14 +45,6 @@ class Player {
     });
   }
 
-  getFlyX() {
-    return Math.round(Math.random() * 500); //TODO
-  }
-
-  getFlyY() {
-    return Math.round(Math.random() * 500); //TODO
-  }
-
   detectCollision(context) {
     const data = context.getImageData(this.posX, this.posY, this.width, this.height).data;
     let sum = 0;
@@ -64,9 +54,9 @@ class Player {
     return sum > 1000;
   }
 
-  detectFly() {
-    return (Math.abs(this.posX - this.flyX) < this.width &&
-      Math.abs(this.posY - this.flyY) < this.height);
+  detectFly(fly) {
+    return (Math.abs(this.posX - fly.x) < this.width &&
+      Math.abs(this.posY - this.fly.y) < this.height);
   }
 
   loseLife() {
@@ -105,17 +95,16 @@ class Player {
       200+this.width, 200 + this.height).data;
   };
 
-  tick(context) {
-    this.msgDiffWorker(context);
-    if (this.detectCollision(context)) {
+  tick(fly) {
+    this.msgDiffWorker();
+    if (this.detectCollision()) {
       this.loseLife();
       splat.play();
     }
 
-    if (this.detectFly()) {
+    if (this.detectFly(fly)) {
       ribbit.play();
-      this.flyX = this.getFlyX();
-      this.flyY = this.getFlyY();
+      fly.move();
       this.score += 10;
     }
   }

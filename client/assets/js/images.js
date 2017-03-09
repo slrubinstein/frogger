@@ -1,8 +1,9 @@
-const frog = new Image(),
-  fly = new Image(),
-  deadFrog = new Image();
+const frogs = [new Image(), new Image()];
+const flyImg = new Image();
+const deadFrog = new Image();
 
 
-frog.src = 'assets/img/frog.png';
-fly.src = 'assets/img/fly.gif';
+frogs[0].src = 'assets/img/frog0.png';
+frogs[1].src = 'assets/img/frog1.png';
+flyImg.src = 'assets/img/fly.gif';
 deadFrog.src = 'assets/img/deadFrog.png';

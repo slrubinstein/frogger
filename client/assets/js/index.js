@@ -14,6 +14,7 @@ const ctx = canvas.getContext('2d'),
 const frogWidth = 60, frogHeight = 50;
 const w = 1800, h = 850;
 const players = [];
+const fly = new Fly();
 
 let color;
 let isGameOver = false;
@@ -168,11 +169,11 @@ drawGame = () => {
     gctx.fillRect(40,0,40,40);
   }
 
-  players.forEach(player => {
-    gctx.drawImage(frog, player.posX, player.posY, frogWidth, frogHeight);
-    gctx.drawImage(fly, player.flyX, player.flyY, frogWidth, frogHeight);
+  players.forEach((player, i) => {
+    gctx.drawImage(frogs[i], player.posX, player.posY, frogWidth, frogHeight);
     gctx.drawImage(deadFrog, player.deadX, player.deadY, frogWidth, frogHeight);
   });
+  gctx.drawImage(flyImg, fly.x, fly.y, frogWidth, frogHeight);
 };
 
 diffWorker.addEventListener('message', onDiffMessage);
