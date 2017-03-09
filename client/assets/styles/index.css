@@ -130,6 +130,7 @@ img, #game {
 
 #gameOver {
   display: none;
+  justify-content: flex-start;
 }
 
 #instructions {
@@ -147,4 +148,38 @@ img, #game {
   height: calc(100vh - 80px);
   background-color: rgba(0,0,0,0.4);
   text-transform: uppercase;
+}
+
+#hiScoresScreen {
+  display: none;
+  justify-content: flex-start;
+}
+
+#dbHiScores {
+  width: 285px;
+}
+
+.dbHiScore {
+  float: right;
+}
+
+#restart {
+  display: none;
+  position: absolute;
+  bottom: 0;
+}
+
+#cursor {
+  display: inline-block;
+  content: '';
+  height: 28px;
+  width: 30px;
+  background-color: red;
+  margin-left: -32px;
+  margin-bottom: 4px;
+}
+
+#enterHiScore {
+  display: none;
+  text-align: center;
 }
