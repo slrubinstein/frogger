@@ -73,7 +73,7 @@ onKeyDown = (e) => {
 startVideo = () => {
   var canvas = document.getElementById('canvas');
   // var url = 'ws://'+document.location.hostname+':8082/';
-  var url = 'ws://10.8.33.193:8082/';
+  var url = 'ws://104.131.119.113:8082/';
   JSMpegPlayer = new JSMpeg.Player(url, {
     canvas: canvas,
     disableGl: true,
