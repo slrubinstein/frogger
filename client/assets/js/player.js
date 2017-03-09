@@ -13,7 +13,7 @@ class Player {
 
     this.lives = 3;
     this.score = 0;
-    this.keyDownTimer;
+    this.keyDownTimer = {};
 
     this.diffWorker = new Worker('assets/js/diffWorker.js');
     this.diffWorker.addEventListener('message', this.onDiffMessage.bind(this));
@@ -28,26 +28,21 @@ class Player {
     return this.lives;
   }
 
-  //TODO: Don't let people go off the screen!
   attachKeyListeners(up, down, left, right) {
     document.addEventListener('keydown', (e) => {
-      if (!this.keyDownTimer) {
-        this.keyDownTimer = setTimeout(() => this.keyDownTimer = null, 100);
+      if (!this.keyDownTimer[e.keyCode]) {
+        this.keyDownTimer[e.keyCode] = setTimeout(() => delete(this.keyDownTimer[e.keyCode]), 100);
         switch (e.keyCode) {
           case up:
-            e.preventDefault();
             this.move('U');
             break;
           case down:
-            e.preventDefault();
             this.move('D');
             break;
           case left:
-            e.preventDefault();
             this.move('L');
             break;
           case right:
-            e.preventDefault();
             this.move('R');
             break;
         }
