@@ -1,3 +1,5 @@
+const canvasHeight = 850, canvasWidth = 1800;
+
 class Player {
   constructor(up, down, left, right, startingX, startingY, height, width) {
     this.attachKeyListeners(up, down, left, right);
@@ -33,24 +35,71 @@ class Player {
         this.keyDownTimer = setTimeout(() => this.keyDownTimer = null, 100);
         switch (e.keyCode) {
           case up:
-            this.posY-=this.height;
             e.preventDefault();
+            this.move('U');
             break;
           case down:
-            this.posY+=this.height;
             e.preventDefault();
+            this.move('D');
             break;
           case left:
-            this.posX-=this.width;
             e.preventDefault();
+            this.move('L');
             break;
           case right:
-            this.posX+=this.width;
             e.preventDefault();
+            this.move('R');
             break;
         }
       }
     });
+  }
+
+  checkY(y) {
+    if (y < canvasHeight - this.height && y > this.height) {
+      return true;
+    }
+    return false;
+  }
+
+  checkX(x) {
+    if (x < canvasWidth - this.width && x > this.height) {
+      return true;
+    }
+    return false;
+  }
+
+  move(direction) {
+    switch (direction) {
+      case 'U':
+        if (this.checkY(this.posY - this.height)) {
+          this.posY -= this.height;
+        }
+        break;
+      case 'D':
+        if (this.checkY(this.posY + this.height)) {
+          this.posY += this.height;
+        }
+        break;
+      case 'L':
+        if (this.checkX(this.posX - this.width)) {
+          this.posX -= this.width;
+        }
+        break;
+      case 'R':
+        if (this.checkX(this.posX + this.width)) {
+          this.posX += this.width;
+        }
+        break;
+    }
+  }
+
+  getFlyX() {
+    return Math.round(Math.random() * 500); //TODO
+  }
+
+  getFlyY() {
+    return Math.round(Math.random() * 500); //TODO
   }
 
   detectCollision() {
