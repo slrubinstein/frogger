@@ -91,8 +91,8 @@ displayHiScore = () => gameHiScore.innerHTML = hiScore;
 
 startGame = (isTwoPlayer) => {
   if (isTwoPlayer) {
-    players.push(new Player(38, 40, 37, 39, w/3, h-100, frogHeight, frogWidth));
-    players.push(new Player(87, 83, 65, 68, 2*w/3, h-100, frogHeight, frogWidth));
+    players.push(new Player(38, 40, 37, 39, 2*w/3, h-100, frogHeight, frogWidth));
+    players.push(new Player(87, 83, 65, 68, w/3, h-100, frogHeight, frogWidth));
   } else {
     players.push(new Player(38, 40, 37, 39, w/2-frogWidth/2, h-100, frogHeight, frogWidth));
   }
@@ -130,6 +130,10 @@ setLives = () => {
       img.src = 'assets/img/frog.png';
       img.classList.add('life');
       gameLives.append(img);
+
+      if (player.lives <= 0) {
+        gameOver();
+      }
     }
   });
 }
@@ -149,20 +153,6 @@ setScore = (score, scoreElement, finalElement) => {
   gameHiScore.innerHTML = hiScore;
 }
 
-// loseLife = () => {
-//   deadFrogX = frogX;
-//   deadFrogY = frogY;
-
-//   frog.src = '';
-
-//   setTimeout(() => {
-//     frog.src = 'assets/img/frog.png';
-//     deadFrogX = null;
-//     deadFrogY = null;
-//   }, 500);
-//   setFrogToStartPosition();
-// }
-
 onDiffMessage = ({ data }) => {
   const imageData = new ImageData(data.diff, 200+frogWidth, 200+frogHeight);
   dctx.putImageData(imageData, data.prevX-100, data.prevY-100);
@@ -180,8 +170,8 @@ drawGame = () => {
 
   players.forEach(player => {
     gctx.drawImage(frog, player.posX, player.posY, frogWidth, frogHeight);
-    // gctx.drawImage(deadFrog, deadFrogX, deadFrogY, frogWidth, frogHeight);
     gctx.drawImage(fly, player.flyX, player.flyY, frogWidth, frogHeight);
+    gctx.drawImage(deadFrog, player.deadX, player.deadY, frogWidth, frogHeight);
   });
 };
 

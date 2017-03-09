@@ -5,8 +5,9 @@ class Player {
     this.height = height;
     this.width = width;
 
-    this.posX = startingX;
-    this.posY = startingY;
+    this.posX = this.startingX = startingX;
+    this.posY = this.startingY = startingY;
+    this.deadX = this.deadY = null;
     this.flyX = this.getFlyX();
     this.flyY = this.getFlyY();
 
@@ -21,7 +22,6 @@ class Player {
 
   attachKeyListeners(up, down, left, right) {
     document.addEventListener('keydown', (e) => {
-      console.log(e.keyCode);
       if (!keyDownTimer) {
         this.keyDownTimer = setTimeout(() => this.keyDownTimer = null, 100);
         switch (e.keyCode) {
@@ -72,10 +72,15 @@ class Player {
     this.lives--;
     setLives();
 
-    if (lives <= 0) {
-      gameOver();
-      return;
-    }
+    this.deadX = this.posX;
+    this.deadY = this.posY;
+    this.posX = this.posY = null;
+
+    setTimeout(() => {
+      this.deadX = this.deadY = null
+      this.posX = this.startingX;
+      this.posY = this.startingY;
+    }, 500)
   }
 
   msgDiffWorker(context) {
