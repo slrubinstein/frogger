@@ -148,3 +148,16 @@ img, #game {
   background-color: rgba(0,0,0,0.4);
   text-transform: uppercase;
 }
+
+#hiScoresScreen {
+  // display: none;
+  justify-content: flex-start;
+}
+
+#dbHiScores {
+  width: 285px;
+}
+
+.dbHiScore {
+  float: right;
+}
