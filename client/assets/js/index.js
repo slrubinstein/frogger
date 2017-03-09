@@ -114,7 +114,7 @@ tick = () => {
     startTime = Date.now();
   }
 
-  players.forEach(player => player.tick());
+  players.forEach(player => player.tick(fly));
 
   setScores();
   drawGame();
@@ -127,7 +127,7 @@ setLives = () => {
 
     for (let i =0; i < player.lives; i++) {
       let img = document.createElement('img');
-      img.src = 'assets/img/frog.png';
+      img.src = 'assets/img/frog0.png';
       img.classList.add('life');
       gameLives.append(img);
 

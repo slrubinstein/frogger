@@ -29,7 +29,7 @@ class Player {
   //TODO: Don't let people go off the screen!
   attachKeyListeners(up, down, left, right) {
     document.addEventListener('keydown', (e) => {
-      if (!keyDownTimer) {
+      if (!this.keyDownTimer) {
         this.keyDownTimer = setTimeout(() => this.keyDownTimer = null, 100);
         switch (e.keyCode) {
           case up:
@@ -53,8 +53,8 @@ class Player {
     });
   }
 
-  detectCollision(context) {
-    const data = context.getImageData(this.posX, this.posY, this.width, this.height).data;
+  detectCollision() {
+    const data = dctx.getImageData(this.posX, this.posY, this.width, this.height).data;
 
     let sum = 0;
     for (let i=0; i<data.length; i+=8) {
@@ -65,7 +65,7 @@ class Player {
 
   detectFly(fly) {
     return (Math.abs(this.posX - fly.x) < this.width &&
-      Math.abs(this.posY - this.fly.y) < this.height);
+      Math.abs(this.posY - fly.y) < this.height);
   }
 
   loseLife() {
