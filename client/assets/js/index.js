@@ -11,67 +11,13 @@ const ctx = canvas.getContext('2d'),
 
 const w = 1800, h = 850;
 
-let JSMpegPlayer, video, videoMode = false;
-
 gctx.mozImageSmoothingEnabled = false;
 gctx.webkitImageSmoothingEnabled = false;
 gctx.imageSmoothingEnabled = false;
 
-startVideo = () => {
-  var canvas = document.getElementById('canvas');
-  // var url = 'ws://'+document.location.hostname+':8082/';
-  var url = 'ws://104.131.119.113:8082/';
-  JSMpegPlayer = new JSMpeg.Player(url, {
-    canvas: canvas,
-    disableGl: true,
-    videoBufferSize: 1200 * 1200
-  });
-}
-
-function switchToVideo(src) {
-  if (video) {
-    video.remove();
-    video = null;
-  } else {
-    JSMpegPlayer.stop();
-  }
-
-  video = document.createElement('video');
-  video.src = src;
-  video.style.display = 'none';
-  video.loop = true;
-  document.body.appendChild(video);
-  video.play();
-
-  videoMode = true;
-  videoTick();
-}
-
-function switchToLive() {
-  videoMode = false;
-  JSMpegPlayer.play();
-
-  if (video) {
-    video.remove();
-    video = null;
-  }
-}
-
-videoTick = () => {
-  try {
-    ctx.drawImage(video, 0, 0, w, h);
-  } catch (e) {
-    console.warn('video cannot be drawn to canvas', e);
-  }
-
-  if (videoMode) {
-    window.requestAnimationFrame(videoTick);
-  }
-}
-
 class Game {
   constructor() {
-    startVideo();
+    this.videoManager = new VideoManager(canvas, ctx);
     this.isGameOver = false;
     this.frogWidth = 60;
     this.frogHeight = 50;
@@ -97,11 +43,8 @@ class Game {
     this.paintLives();
     this.tick();
 
-    if (videoMode && video) {
-      video.pause();
-      video.currentTime = 0;
-      video.play();
-    }
+    this.videoManager.restartVideo();
+
     trafficNoise.play();
   }
 

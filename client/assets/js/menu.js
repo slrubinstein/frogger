@@ -33,10 +33,10 @@ onKeyUpStart = (e) => {
       case 39: activeLevel++; break;
     }
     activeLevel = Math.abs(activeLevel%4);
-    if (levels[activeLevel].src === 'live' && videoMode) {
-      switchToLive();
+    if (levels[activeLevel].src === 'live' && game.videoManager.videoMode) {
+      game.videoManager.switchToLive();
     } else {
-      switchToVideo(levels[activeLevel].src);
+      game.videoManager.switchToVideo(levels[activeLevel].src);
     }
     document.querySelector('.active').classList.remove('active');
     levelContainer.children[activeLevel].classList.add('active');
