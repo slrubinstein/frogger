@@ -195,6 +195,10 @@ img, #game {
   display: none;
 }
 
+.chooseNumberPlayersText {
+  margin-bottom: 150px;
+}
+
 .numberPlayers {
   position: relative;
 }

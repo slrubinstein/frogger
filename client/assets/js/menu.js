@@ -48,7 +48,7 @@ chooseNumberOfPlayers = () => {
   document.removeEventListener('keyup', onKeyUpStart);
   menuElement.style.display = 'none';
   chooseNumberPlayers.style.display = 'flex';
-  chooseNumberPlayers.children[0].classList.add('active');
+  chooseNumberPlayers.children[1].classList.add('active');
   document.addEventListener('keyup', onKeyUpNumPlayers);
 }
 
@@ -57,8 +57,8 @@ onKeyUpNumPlayers = (e) => {
   if (e.keyCode === 83) {
     const active = chooseNumberPlayers.querySelector('.active');
     const numPlayers = parseInt(active.dataset.number);
-    chooseNumberPlayers.children[0].classList.remove('active');
     chooseNumberPlayers.children[1].classList.remove('active');
+    chooseNumberPlayers.children[2].classList.remove('active');
     setNumberOfPlayers(numPlayers);
     showInstructions(numPlayers);
   }
@@ -82,8 +82,8 @@ setNumberOfPlayers = (numPlayers) => {
 
 changeActiveNumPlayers = () => {
   ribbit.play();
-  chooseNumberPlayers.children[0].classList.toggle('active');
   chooseNumberPlayers.children[1].classList.toggle('active');
+  chooseNumberPlayers.children[2].classList.toggle('active');
 }
 
 showInstructions = (numPlayers) => {
