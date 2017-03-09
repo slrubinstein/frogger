@@ -6,9 +6,9 @@ let activeLevel = 0;
 
 levels = [
   {img: 'level0.svg', name: 'Live', src: 'live'},
-  {img: 'level1.png', name: 'Manhattan', src: './assets/vid/5pm.mp4'},
-  {img: 'level2.png', name: 'Brooklyn', src: './assets/vid/510pm.mp4'},
-  {img: 'level3.png', name: 'Bronx', src: './assets/vid/night.mp4'},
+  {img: 'cloud.png', name: 'Morning', src: './assets/vid/5pm.mp4'},
+  {img: 'sun.png', name: 'Afternoon', src: './assets/vid/510pm.mp4'},
+  {img: 'moon.png', name: 'Night', src: './assets/vid/night.mp4'},
 ];
 
 
@@ -65,7 +65,7 @@ createLevelMarkup = (img, name) => {
     <img class="arrow" src="../assets/img/arrow.png">
     <span>
       <img class="levelImg" src="../assets/img/${img}">
-      <div>${name}</div>
+      <div style="text-align: center">${name}</div>
     </span>`;
   return level;
 }
