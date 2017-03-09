@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "ffmpeg": "ffmpeg -rtsp_transport tcp -i 'rtsp://admin:hack9000@10.10.10.94/cam/realmonitor?channel=1&subtype=0' -vf 'crop=1800:850:250:210' -f mpegts -vcodec mpeg1video -b:v 6000k http://localhost:8081/test/",
+    "ffmpeg": "ffmpeg -rtsp_transport tcp -i 'rtsp://admin:hack9000@10.10.10.94/cam/realmonitor?channel=1&subtype=0' -vf 'crop=1800:850:250:210' -f mpegts -vcodec mpeg1video -b:v 2000k http://104.131.119.113:8081/test/",
     "relay": "node websocket-relay.js test",
     "serve": "http-server ./client",
     "start": "npm run relay & npm run ffmpeg & npm run serve",
-    "record": "echo \"Starting new recording at \" && date && ffmpeg -rtsp_transport tcp -i 'rtsp://admin:hack9000@10.10.10.74/cam/realmonitor?channel=1&subtype=0' -vf 'crop=1800:850:250:210' -f mpegts -vcodec mpeg1video -b:v 6000k $1"
+    "record": "echo \"Starting new recording at \" && date && ffmpeg -rtsp_transport tcp -i 'rtsp://admin:hack9000@10.10.10.94/cam/realmonitor?channel=1&subtype=0' -vf 'crop=1800:850:250:210' -f mpegts -vcodec mpeg1video -b:v 6000k $1"
   },
   "author": "",
   "license": "ISC",

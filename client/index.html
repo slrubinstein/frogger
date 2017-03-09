@@ -43,9 +43,16 @@
       <p class="blink">Press S to Select</p>
     </div>
     <div class="textContainer"  id="gameOver">
-      <h1>Game Over</h1>
-      <p>Score: <span id="finalScore"></span></p>
-      <p>Press S to Restart</p>
+      <h2>Game Over</h2>
+      <p>Your Score: <span id="finalScore"></span></p>
+      <div id="enterHiScore">
+        <div>New Hi Score. Enter Initials.</div>
+        <span id="enterName"></span>
+        <span id="cursor" class="blink"></span>
+      </div>
+      <h3>Hi Scores:</h3>
+      <div id="dbHiScores"></div>
+      <p id="restart" class="blink">Press S to Restart</p>
     </div>
     <div class="textContainer"  id="instructions">
       <p>Press Arrow Keys to Move</p>
@@ -55,7 +62,21 @@
     </div>
     <div id="levelSelection"></div>
   </div>
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase-database.js"></script>
 
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyARHKV0_RxUJ1YMLytrcUAvXHqlY4ifLqM",
+    authDomain: "frogger-bcd68.firebaseapp.com",
+    databaseURL: "https://frogger-bcd68.firebaseio.com",
+    storageBucket: "frogger-bcd68.appspot.com",
+    messagingSenderId: "353867656935"
+  };
+  firebase.initializeApp(config);
+</script>
   <script type="text/javascript" src="./assets/js/jsmpeg.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.2.2/pixi.min.js"></script>
   <script src="assets/js/player.js"></script>
