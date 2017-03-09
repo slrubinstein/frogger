@@ -87,7 +87,7 @@ img, #game {
 .blink {
   animation: blink 1s infinite;
   font-size: 26px;
-  margin-bottom: 78px;
+  margin-top: 150px;
 }
 
 #levels {
@@ -130,7 +130,7 @@ img, #game {
 
 #gameOver {
   display: none;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 #instructions {
