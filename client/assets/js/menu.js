@@ -1,11 +1,12 @@
 const menuElement = document.getElementById('menu');
 const levelContainer = document.getElementById('levels');
+const chooseNumberPlayers = document.getElementById('chooseNumberPlayers');
 let activeLevel = 0;
 
 levels = [
   {img: 'level0.svg', name: 'Live', src: 'live'},
   {img: 'cloud.png', name: 'Morning', src: './assets/vid/level3.mp4'},
-  {img: 'sun.png', name: 'Afternoon', src: './assets/vid/510pm.mp4'},
+  {img: 'sun.png', name: 'Afternoon', src: './assets/vid/afternoon.mp4'},
   {img: 'moon.png', name: 'Night', src: './assets/vid/night.mp4'},
 ];
 
@@ -20,7 +21,7 @@ initMenu = () => {
 }
 
 onKeyUpStart = (e) => {
-  if (e.keyCode === 83) showInstructions(); //S
+  if (e.keyCode === 83) chooseNumberOfPlayers(); //S
   else if (e.keyCode > 36 && e.keyCode < 41) {
     e.preventDefault();
     switch (e.keyCode) {
@@ -41,9 +42,40 @@ onKeyUpStart = (e) => {
   }
 }
 
-showInstructions = (e) => {
+chooseNumberOfPlayers = () => {
   document.removeEventListener('keyup', onKeyUpStart);
   menuElement.style.display = 'none';
+  chooseNumberPlayers.style.display = 'flex';
+  chooseNumberPlayers.children[0].classList.add('active');
+  document.addEventListener('keyup', onKeyUpNumPlayers);
+}
+
+onKeyUpNumPlayers = (e) => {
+  e.preventDefault();
+  if (e.keyCode === 83) {
+    const active = chooseNumberPlayers.querySelector('.active');
+    const numPlayers = parseInt(active.textContent.trim());
+    chooseNumberPlayers.children[0].classList.remove('active');
+    chooseNumberPlayers.children[1].classList.remove('active');
+    showInstructions();
+  }
+  switch (e.keyCode) {
+    case 38: changeActiveNumPlayers(); break;
+    case 40: changeActiveNumPlayers(); break;
+    case 37: changeActiveNumPlayers(); break;
+    case 39: changeActiveNumPlayers(); break;
+  }
+}
+
+changeActiveNumPlayers = () => {
+  ribbit.play();
+  chooseNumberPlayers.children[0].classList.toggle('active');
+  chooseNumberPlayers.children[1].classList.toggle('active');
+}
+
+showInstructions = (e) => {
+  document.removeEventListener('keyup', onKeyUpNumPlayers);
+  chooseNumberPlayers.style.display = 'none';
   instructions.style.display = 'flex';
   for (var i = 0; i < 3; i++) {
     setTimeout(() => beep.play(), 800*i);
