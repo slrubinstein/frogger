@@ -1,1 +1,1 @@
-web: npm run relay & node_modules/http-server/bin/http-server ./client -p 80
+web: npm run relay & node_modules/http-server/bin/http-server ./client -p $PORT
