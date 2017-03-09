@@ -91,7 +91,7 @@ function switchToVideo(src) {
 
   video = document.createElement('video');
   video.src = src;
-  video.style.visibility = 'hidden';
+  video.style.display = 'none';
   video.loop = true;
   document.body.appendChild(video);
   video.play();
