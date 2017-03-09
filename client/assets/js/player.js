@@ -20,6 +20,7 @@ class Player {
     return this.lives;
   }
 
+  //TODO: Don't let people go off the screen!
   attachKeyListeners(up, down, left, right) {
     document.addEventListener('keydown', (e) => {
       if (!keyDownTimer) {
