@@ -53,21 +53,9 @@ class Player {
     });
   }
 
-<<<<<<< HEAD
   detectCollision(context) {
     const data = context.getImageData(this.posX, this.posY, this.width, this.height).data;
-=======
-  getFlyX() {
-    return Math.round(Math.random() * 500); //TODO
-  }
 
-  getFlyY() {
-    return Math.round(Math.random() * 500); //TODO
-  }
-
-  detectCollision() {
-    const data = dctx.getImageData(this.posX, this.posY, this.width, this.height).data;
->>>>>>> 4a7ae46543dba8e11adf070e0dc365baca4011f6
     let sum = 0;
     for (let i=0; i<data.length; i+=8) {
       sum+=data[i];
