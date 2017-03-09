@@ -12,6 +12,14 @@ class Player {
     this.lives = 3;
     this.score = 0;
     this.keyDownTimer;
+
+    this.diffWorker = new Worker('assets/js/diffWorker.js');
+    this.diffWorker.addEventListener('message', this.onDiffMessage.bind(this));
+  }
+
+  onDiffMessage({ data }) {
+    const imageData = new ImageData(data.diff, 200+this.width, 200+this.height);
+    dctx.putImageData(imageData, data.prevX-100, data.prevY-100);
   }
 
   getLives() {
@@ -45,8 +53,21 @@ class Player {
     });
   }
 
+<<<<<<< HEAD
   detectCollision(context) {
     const data = context.getImageData(this.posX, this.posY, this.width, this.height).data;
+=======
+  getFlyX() {
+    return Math.round(Math.random() * 500); //TODO
+  }
+
+  getFlyY() {
+    return Math.round(Math.random() * 500); //TODO
+  }
+
+  detectCollision() {
+    const data = dctx.getImageData(this.posX, this.posY, this.width, this.height).data;
+>>>>>>> 4a7ae46543dba8e11adf070e0dc365baca4011f6
     let sum = 0;
     for (let i=0; i<data.length; i+=8) {
       sum+=data[i];
@@ -74,12 +95,12 @@ class Player {
     }, 500)
   }
 
-  msgDiffWorker(context) {
+  msgDiffWorker() {
     if (this.prevX && this.prevY && this.prevImage) {
-      const currentImage = context.getImageData(this.prevX - 100, this.prevY - 100,
+      const currentImage = ctx.getImageData(this.prevX - 100, this.prevY - 100,
         200+this.width, 200+this.height).data;
 
-      diffWorker.postMessage({
+      this.diffWorker.postMessage({
         'img1data': currentImage,
         'img2data': this.prevImage,
         'diff': ctx.createImageData(200+this.width, 200+this.height).data,
@@ -91,7 +112,7 @@ class Player {
     }
     this.prevX = this.posX;
     this.prevY = this.posY;
-    this.prevImage = context.getImageData(this.posX - 100, this.posY - 100,
+    this.prevImage = ctx.getImageData(this.posX - 100, this.posY - 100,
       200+this.width, 200 + this.height).data;
   };
 

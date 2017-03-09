@@ -4,8 +4,7 @@ const canvas = document.getElementById('canvas'),
   finalScore = document.getElementById('finalScore'),
   diff = document.getElementById('diff'),
   body = document.querySelector('body'),
-  gameLives = document.getElementById('gameLives'),
-  diffWorker = new Worker('assets/js/diffWorker.js');
+  gameLives = document.getElementById('gameLives');
 
 const ctx = canvas.getContext('2d'),
   gctx = game.getContext('2d'),
@@ -115,7 +114,7 @@ tick = () => {
     startTime = Date.now();
   }
 
-  players.forEach(player => player.tick(dctx));
+  players.forEach(player => player.tick());
 
   setScores();
   drawGame();
@@ -154,11 +153,6 @@ setScore = (score, scoreElement, finalElement) => {
   gameHiScore.innerHTML = hiScore;
 }
 
-onDiffMessage = ({ data }) => {
-  const imageData = new ImageData(data.diff, 200+frogWidth, 200+frogHeight);
-  dctx.putImageData(imageData, data.prevX-100, data.prevY-100);
-};
-
 drawGame = () => {
   gctx.clearRect(0,0,w,h);
 
@@ -175,7 +169,5 @@ drawGame = () => {
   });
   gctx.drawImage(flyImg, fly.x, fly.y, frogWidth, frogHeight);
 };
-
-diffWorker.addEventListener('message', onDiffMessage);
 
 init();
