@@ -1,32 +1,22 @@
 const canvas = document.getElementById('canvas'),
-  game = document.getElementById('game'),
-  gameHiScore = document.getElementById('hiScore'),
+  gameCanvas = document.getElementById('gameCanvas'),
   finalScore = document.getElementById('finalScore'),
-  diff = document.getElementById('diff'),
+  diffCanvas = document.getElementById('diff'),
   body = document.querySelector('body'),
   gameLives = document.getElementById('gameLives');
 
 const ctx = canvas.getContext('2d'),
-  gctx = game.getContext('2d'),
-  dctx = diff.getContext('2d');
+  gctx = gameCanvas.getContext('2d'),
+  dctx = diffCanvas.getContext('2d');
 
-const frogWidth = 60, frogHeight = 50;
 const w = 1800, h = 850;
-const players = [];
-const fly = new Fly();
 
-let color;
-let isGameOver = false;
-let startTime = null,
-  videoMode = false,
-  JSMpegPlayer = null
-  video = null;
+let color, JSMpegPlayer, video;
+let videoMode = false;
 
 gctx.mozImageSmoothingEnabled = false;
 gctx.webkitImageSmoothingEnabled = false;
 gctx.imageSmoothingEnabled = false;
-
-let keyDownTimer = null;
 
 startVideo = () => {
   var canvas = document.getElementById('canvas');
@@ -80,94 +70,100 @@ videoTick = () => {
   }
 }
 
-
-init = () => {
-  setLives();
-  startVideo();
-  displayHiScore();
-};
-
-displayHiScore = () => gameHiScore.innerHTML = hiScore;
-
-startGame = (isTwoPlayer) => {
-  if (isTwoPlayer) {
-    players.push(new Player(38, 40, 37, 39, 2*w/3, h-100, frogHeight, frogWidth));
-    players.push(new Player(87, 83, 65, 68, w/3, h-100, frogHeight, frogWidth));
-  } else {
-    players.push(new Player(38, 40, 37, 39, w/2-frogWidth/2, h-100, frogHeight, frogWidth));
+class Game {
+  constructor() {
+    startVideo();
+    this.isGameOver = false;
+    this.frogWidth = 60;
+    this.frogHeight = 50;
   }
 
-  setLives();
-  if (!isGameOver) tick();
-  isGameOver = false;
+  startGame(isTwoPlayer) {
+    this.isTwoPlayer = isTwoPlayer;
 
-  if (videoMode && video) {
-    video.pause();
-    video.currentTime = 0;
-    video.play();
+    if (isTwoPlayer) {
+      this.players = [
+        new Player(38, 40, 37, 39, 2*w/3, h-100, this.frogHeight, this.frogWidth, this.onSetLives),
+        new Player(87, 83, 65, 68, w/3, h-100, this.frogHeight, this.frogWidth, this.onSetLives)
+      ];
+    } else {
+      this.players = [
+        new Player(38, 40, 37, 39, w/2-this.frogWidth/2, h-100, this.rogHeight, this.frogWidth, this.onSetLives)
+      ];
+    }
+
+    this.fly = new Fly();
+    this.isGameOver = false;
+
+    this.paintLives();
+    this.tick();
+
+    if (videoMode && video) {
+      video.pause();
+      video.currentTime = 0;
+      video.play();
+    }
+    trafficNoise.play();
   }
-  trafficNoise.play();
-}
 
-tick = () => {
-  if (startTime === null) {
-    startTime = Date.now();
-  }
+  tick() {
+    this.players.forEach(player => player.tick(this.fly));
+    this.setScores();
+    this.drawGame();
+    window.requestAnimationFrame(this.tick.bind(this));
+  };
 
-  players.forEach(player => player.tick(fly));
+  paintLives() {
+    this.players.forEach(player => {
+      gameLives.innerHTML = '';
 
-  setScores();
-  drawGame();
-  window.requestAnimationFrame(tick);
-};
-
-setLives = () => {
-  players.forEach(player => {
-    gameLives.innerHTML = '';
-
-    for (let i =0; i < player.lives; i++) {
-      let img = document.createElement('img');
-      img.src = 'assets/img/frog0.png';
-      img.classList.add('life');
-      gameLives.append(img);
+      for (let i =0; i < player.lives; i++) {
+        let img = document.createElement('img');
+        img.src = 'assets/img/frog0.png';
+        img.classList.add('life');
+        gameLives.append(img);
+      }
 
       if (player.lives <= 0) {
-        gameOver();
+        this.isGameOver = true;
+        gameOver(this.score);
       }
-    }
-  });
-}
-
-setScores = () => {
-  players.forEach((player, i) => {
-    let scoreElement = players.length > 1 ? `#player${i} .score` : `#gameScore`;
-    scoreElement = document.querySelector(scoreElement);
-    setScore(player.score, scoreElement, finalScore)
-  });
-}
-
-setScore = (score, scoreElement, finalElement) => {
-  scoreElement.innerHTML = parseInt(score, 10);
-  finalElement.innerHTML = parseInt(score, 10);
-  hiScore = Math.max(hiScore, parseInt(score, 10));
-  gameHiScore.innerHTML = hiScore;
-}
-
-drawGame = () => {
-  gctx.clearRect(0,0,w,h);
-
-  if (color) {
-    gctx.fillStyle = '#' + color[0][0].toString(16) + color[0][1].toString(16) + color[0][2].toString(16);
-    gctx.fillRect(0,0,40,40);
-    gctx.fillStyle = '#' + color[1][0].toString(16) + color[1][1].toString(16) + color[1][2].toString(16);
-    gctx.fillRect(40,0,40,40);
+    });
   }
 
-  players.forEach((player, i) => {
-    gctx.drawImage(frogs[i], player.posX, player.posY, frogWidth, frogHeight);
-    gctx.drawImage(deadFrog, player.deadX, player.deadY, frogWidth, frogHeight);
-  });
-  gctx.drawImage(flyImg, fly.x, fly.y, frogWidth, frogHeight);
-};
+  setScores() {
+    this.players.forEach((player, i) => {
+      let scoreElement = this.isTwoPlayer ? `#player${i} .score` : `#gameScore`;
+      scoreElement = document.querySelector(scoreElement);
+      this.paintScore(player.score, scoreElement, finalScore)
+    });
+  }
 
-init();
+  paintScore(score, scoreElement, finalElement) {
+    scoreElement.innerHTML = parseInt(score, 10);
+    finalElement.innerHTML = parseInt(score, 10);
+    this.hiScore = Math.max(this.hiScore, parseInt(this.score, 10));
+    gameHiScore.innerHTML = this.hiScore;
+  }
+
+  displayHiScore(){ gameHiScore.innerHTML = this.hiScore; }
+
+  drawGame() {
+    gctx.clearRect(0,0,w,h);
+
+    if (color) {
+      gctx.fillStyle = '#' + color[0][0].toString(16) + color[0][1].toString(16) + color[0][2].toString(16);
+      gctx.fillRect(0,0,40,40);
+      gctx.fillStyle = '#' + color[1][0].toString(16) + color[1][1].toString(16) + color[1][2].toString(16);
+      gctx.fillRect(40,0,40,40);
+    }
+
+    this.players.forEach((player, i) => {
+      gctx.drawImage(frogs[i], player.posX, player.posY, frogWidth, frogHeight);
+      gctx.drawImage(deadFrog, player.deadX, player.deadY, frogWidth, frogHeight);
+    });
+    gctx.drawImage(flyImg, this.fly.x, this.fly.y, frogWidth, frogHeight);
+  }
+}
+
+const game = new Game();

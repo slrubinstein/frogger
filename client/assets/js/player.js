@@ -1,7 +1,7 @@
 class Player {
-  constructor(up, down, left, right, startingX, startingY, height, width) {
+  constructor(game, up, down, left, right, startingX, startingY, height, width, onSetLives) {
     this.attachKeyListeners(up, down, left, right);
-
+    this.onSetLives = onSetLives;
     this.height = height;
     this.width = width;
 
@@ -9,7 +9,7 @@ class Player {
     this.posY = this.startingY = startingY;
     this.deadX = this.deadY = null;
 
-    this.lives = 3;
+    this.lives = 1;
     this.score = 0;
     this.keyDownTimer;
 
@@ -20,10 +20,6 @@ class Player {
   onDiffMessage({ data }) {
     const imageData = new ImageData(data.diff, 200+this.width, 200+this.height);
     dctx.putImageData(imageData, data.prevX-100, data.prevY-100);
-  }
-
-  getLives() {
-    return this.lives;
   }
 
   //TODO: Don't let people go off the screen!
@@ -70,7 +66,7 @@ class Player {
 
   loseLife() {
     this.lives--;
-    setLives();
+    this.onSetLives();
 
     this.deadX = this.posX;
     this.deadY = this.posY;

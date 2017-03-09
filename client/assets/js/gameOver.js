@@ -1,5 +1,5 @@
 const sadNoiseSignalingTheEndOfTheGame = new Audio('assets/sounds/game-over.mp3');
-
+const gameHiScore = document.getElementById('hiScore');
 const gameOverScreen = document.getElementById('gameOver');
 const dbHiScores = document.getElementById('dbHiScores');
 const restart = document.getElementById('restart');
@@ -14,16 +14,13 @@ let name = '';
 
 const MAX_SCORES_LENGTH = 5;
 
-gameOver = () => {
+gameOver = (score) => {
   trafficNoise.pause();
-  isGameOver = true;
   gameOverScreen.style.display = 'flex';
-  frogX = null;
-  frogY = null;
   sadNoiseSignalingTheEndOfTheGame.play();
-  document.removeEventListener('keydown', onKeyDown);
 
-  if (!hiScores.length || hiScores.length < MAX_SCORES_LENGTH || score > hiScores.slice(-1)[0].score) {
+  if (!hiScores.length || hiScores.length < MAX_SCORES_LENGTH ||
+      score > hiScores.slice(-1)[0].score) {
     setTimeout(enterNewHiScore, 500);
     return;
   }

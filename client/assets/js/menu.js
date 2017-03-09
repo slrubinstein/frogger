@@ -96,7 +96,7 @@ showInstructions = (numPlayers) => {
   setTimeout(() => {
     startCar.play();
     instructions.style.display = 'none';
-    startGame(numPlayers === 2);
+    game.startGame(numPlayers === 2);
   }, 2500)
   levelContainer.innerHTML = '';
 }
