@@ -51,7 +51,7 @@ nameListener = (e) => {
 }
 
 saveHiScore = () => {
-  enterHiScore.style.display = 'block';
+  enterHiScore.style.display = 'none';
   document.removeEventListener('keyup', nameListener);
   sendHiScoreToDB();
   listenForRestart();

@@ -2,6 +2,8 @@ const menuElement = document.getElementById('menu');
 const levelContainer = document.getElementById('levels');
 const chooseNumberPlayers = document.getElementById('chooseNumberPlayers');
 let activeLevel = 0;
+const singlePlayer = document.getElementById('singlePlayer');
+const twoPlayer = document.getElementById('twoPlayer');
 
 levels = [
   {img: 'level0.svg', name: 'Live', src: 'live'},
@@ -54,10 +56,11 @@ onKeyUpNumPlayers = (e) => {
   e.preventDefault();
   if (e.keyCode === 83) {
     const active = chooseNumberPlayers.querySelector('.active');
-    const numPlayers = parseInt(active.textContent.trim());
+    const numPlayers = parseInt(active.dataset.number);
     chooseNumberPlayers.children[0].classList.remove('active');
     chooseNumberPlayers.children[1].classList.remove('active');
-    showInstructions();
+    setNumberOfPlayers(numPlayers);
+    showInstructions(numPlayers);
   }
   switch (e.keyCode) {
     case 38: changeActiveNumPlayers(); break;
@@ -67,13 +70,23 @@ onKeyUpNumPlayers = (e) => {
   }
 }
 
+setNumberOfPlayers = (numPlayers) => {
+  if (numPlayers === 1) {
+    singlePlayer.style.display = 'block';
+    twoPlayer.style.display = 'none';
+  } else if (numPlayers === 2) {
+    singlePlayer.style.display = 'none';
+    twoPlayer.style.display = 'block';
+  }
+}
+
 changeActiveNumPlayers = () => {
   ribbit.play();
   chooseNumberPlayers.children[0].classList.toggle('active');
   chooseNumberPlayers.children[1].classList.toggle('active');
 }
 
-showInstructions = (e) => {
+showInstructions = (numPlayers) => {
   document.removeEventListener('keyup', onKeyUpNumPlayers);
   chooseNumberPlayers.style.display = 'none';
   instructions.style.display = 'flex';
@@ -83,7 +96,7 @@ showInstructions = (e) => {
   setTimeout(() => {
     startCar.play();
     instructions.style.display = 'none';
-    startGame(true);
+    startGame(numPlayers === 2);
   }, 2500)
   levelContainer.innerHTML = '';
 }
