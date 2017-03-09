@@ -3,8 +3,7 @@ const canvas = document.getElementById('canvas'),
   gameHiScore = document.getElementById('hiScore'),
   finalScore = document.getElementById('finalScore'),
   diff = document.getElementById('diff'),
-  body = document.querySelector('body'),
-  gameLives = document.getElementById('gameLives');
+  body = document.querySelector('body');
 
 const ctx = canvas.getContext('2d'),
   gctx = game.getContext('2d'),
@@ -122,14 +121,17 @@ tick = () => {
 };
 
 setLives = () => {
-  players.forEach(player => {
-    gameLives.innerHTML = '';
+  players.forEach((player, i) => {
+    const livesSelector = players.length > 1 ? `#player${i} .lives` : `#gameLives`;
+    const livesElement = document.querySelector(livesSelector);
+
+    livesElement.innerHTML = '';
 
     for (let i =0; i < player.lives; i++) {
       let img = document.createElement('img');
       img.src = 'assets/img/frog0.png';
       img.classList.add('life');
-      gameLives.append(img);
+      livesElement.append(img);
 
       if (player.lives <= 0) {
         gameOver();
@@ -140,7 +142,7 @@ setLives = () => {
 
 setScores = () => {
   players.forEach((player, i) => {
-    let scoreElement = players.length > 1 ? `#player${i} .score` : `#gameScore`;
+    let scoreElement = players.length > 1 ? `#player${i} .score` : `#currentScore`;
     scoreElement = document.querySelector(scoreElement);
     setScore(player.score, scoreElement, finalScore)
   });
