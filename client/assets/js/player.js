@@ -2,7 +2,7 @@ const canvasHeight = 850, canvasWidth = 1800;
 
 class Player {
   constructor(up, down, left, right, startingX, startingY, height, width, game) {
-    this.attachKeyListeners(up, down, left, right);
+    this.up = up, this.down = down, this.left = left, this.right = right;
     this.game = game;
     this.height = height;
     this.width = width;
@@ -17,6 +17,11 @@ class Player {
 
     this.diffWorker = new Worker('assets/js/diffWorker.js');
     this.diffWorker.addEventListener('message', this.onDiffMessage.bind(this));
+    document.addEventListener('keydown', this.onKeyDown.bind(this));
+  }
+
+  destructor() {
+    document.removeEventListener('keydown', onKeyDown)
   }
 
   onDiffMessage({ data }) {
@@ -24,26 +29,24 @@ class Player {
     dctx.putImageData(imageData, data.prevX-100, data.prevY-100);
   }
 
-  attachKeyListeners(up, down, left, right) {
-    document.addEventListener('keydown', (e) => {
-      if (!this.keyDownTimer[e.keyCode]) {
-        this.keyDownTimer[e.keyCode] = setTimeout(() => delete(this.keyDownTimer[e.keyCode]), 100);
-        switch (e.keyCode) {
-          case up:
-            this.move('U');
-            break;
-          case down:
-            this.move('D');
-            break;
-          case left:
-            this.move('L');
-            break;
-          case right:
-            this.move('R');
-            break;
-        }
+  onKeyDown(e) {
+    if (!this.keyDownTimer[e.keyCode]) {
+      this.keyDownTimer[e.keyCode] = setTimeout(() => delete(this.keyDownTimer[e.keyCode]), 100);
+      switch (e.keyCode) {
+        case this.up:
+          this.move('U');
+          break;
+        case this.down:
+          this.move('D');
+          break;
+        case this.left:
+          this.move('L');
+          break;
+        case this.right:
+          this.move('R');
+          break;
       }
-    });
+    }
   }
 
   checkY(y) {

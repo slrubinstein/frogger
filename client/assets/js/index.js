@@ -125,7 +125,8 @@ class Game {
 
       if (player.lives <= 0) {
         this.isGameOver = true;
-        gameOver(this.score);
+        this.players = [];
+        gameOver(this.isTwoPlayer && this.score);
       }
     });
   }
