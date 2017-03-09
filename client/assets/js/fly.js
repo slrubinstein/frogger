@@ -1,6 +1,8 @@
 class Fly {
-  constructor() {
+  constructor(flyWidth, flyHeight) {
     this.move();
+    this.flyWidth = flyWidth;
+    this.flyHeight = flyHeight;
   }
 
   move() {
@@ -9,10 +11,13 @@ class Fly {
   }
 
   getNewX() {
-    return Math.round(Math.random() * 500); //TODO
+    const usableColumns = Math.floor(canvasWidth / this.flyWidth) - 2;
+
+    return (Math.floor(Math.random() * usableColumns) + 1.5 ) * this.flyWidth; //TODO
   }
 
   getNewY() {
-    return Math.round(Math.random() * 500); //TODO
+    const usableRows = Math.floor(canvasHeight / this.flyHeight) - 2;
+    return (Math.floor(Math.random() * usableRows + 1.5 ) * this.flyHeight); //TODO
   }
 }

@@ -49,10 +49,17 @@ img, #game {
   width: 100%;
 }
 
-.life {
+#gameLives .life {
   height: 60px;
   width: 60px;
   margin-top: 10px;
+  padding: 0 6px;
+}
+
+.life {
+  height: 50px;
+  width: 50px;
+  margin-top: 0;
   padding: 0 6px;
 }
 
@@ -202,4 +209,14 @@ img, #game {
 
 .numberFrogsImage {
   height: 60px;
+}
+
+#player0 {
+  float: left;
+  padding-left: 6px;
+}
+
+#player1 {
+  float: right;
+  padding-right: 6px;
 }

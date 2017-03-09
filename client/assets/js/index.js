@@ -11,8 +11,7 @@ const ctx = canvas.getContext('2d'),
 
 const w = 1800, h = 850;
 
-let color, JSMpegPlayer, video;
-let videoMode = false;
+let JSMpegPlayer, video, videoMode = false;
 
 gctx.mozImageSmoothingEnabled = false;
 gctx.webkitImageSmoothingEnabled = false;
@@ -83,12 +82,12 @@ class Game {
 
     if (isTwoPlayer) {
       this.players = [
-        new Player(38, 40, 37, 39, 2*w/3, h-100, this.frogHeight, this.frogWidth, this.onSetLives),
-        new Player(87, 83, 65, 68, w/3, h-100, this.frogHeight, this.frogWidth, this.onSetLives)
+        new Player(38, 40, 37, 39, 2*w/3, h-100, this.frogHeight, this.frogWidth, this),
+        new Player(87, 83, 65, 68, w/3, h-100, this.frogHeight, this.frogWidth, this)
       ];
     } else {
       this.players = [
-        new Player(38, 40, 37, 39, w/2-this.frogWidth/2, h-100, this.rogHeight, this.frogWidth, this.onSetLives)
+        new Player(38, 40, 37, 39, w/2-this.frogWidth/2, h-100, this.frogHeight, this.frogWidth, this)
       ];
     }
 
@@ -133,8 +132,8 @@ class Game {
 
   setScores() {
     this.players.forEach((player, i) => {
-      let scoreElement = this.isTwoPlayer ? `#player${i} .score` : `#gameScore`;
-      scoreElement = document.querySelector(scoreElement);
+      const scoreElement = document.querySelector(
+        this.isTwoPlayer ? `#player${i} .score` : `#gameScore`);
       this.paintScore(player.score, scoreElement, finalScore)
     });
   }
@@ -151,18 +150,31 @@ class Game {
   drawGame() {
     gctx.clearRect(0,0,w,h);
 
-    if (color) {
-      gctx.fillStyle = '#' + color[0][0].toString(16) + color[0][1].toString(16) + color[0][2].toString(16);
-      gctx.fillRect(0,0,40,40);
-      gctx.fillStyle = '#' + color[1][0].toString(16) + color[1][1].toString(16) + color[1][2].toString(16);
-      gctx.fillRect(40,0,40,40);
-    }
-
     this.players.forEach((player, i) => {
-      gctx.drawImage(frogs[i], player.posX, player.posY, frogWidth, frogHeight);
-      gctx.drawImage(deadFrog, player.deadX, player.deadY, frogWidth, frogHeight);
+      gctx.drawImage(frogs[i], player.posX, player.posY, this.frogWidth, this.frogHeight);
+      gctx.drawImage(deadFrog, player.deadX, player.deadY, this.frogWidth, this.frogHeight);
     });
-    gctx.drawImage(flyImg, this.fly.x, this.fly.y, frogWidth, frogHeight);
+    gctx.drawImage(flyImg, this.fly.x, this.fly.y, this.frogWidth, this.frogHeight);
+  }
+
+  setLives() {
+    this.players.forEach((player, i) => {
+      const livesElement = document.querySelector(
+        this.isTwoPlayer ? `#player${i} .lives` : `#gameLives`);
+      livesElement.innerHTML = '';
+
+      for (let j =0; j < player.lives; j++) {
+        let img = document.createElement('img');
+        img.src = `assets/img/frog${i}.png`;
+        img.classList.add('life');
+        livesElement.append(img);
+      }
+
+      if (player.lives <= 0) {
+        gameOver();
+        this.isGameOver = true;
+      }
+    });
   }
 }
 
