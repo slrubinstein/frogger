@@ -16,10 +16,22 @@
   </div>
   <div id="gameOverlay">
     <div id="gameInfo">
-      <div id="gameLives"></div>
-      <div id="gameScore" class="gameStats">
-        <div>Score: <span id="currentScore">0</span></div>
-        <div>Hi Score: <span id="hiScore">0</span></div>
+      <div id="singlePlayer">
+        <div id="gameLives"></div>
+        <div id="gameScore" class="gameStats">
+          <div>Score: <span id="currentScore">0</span></div>
+          <div>Hi Score: <span id="hiScore">0</span></div>
+        </div>
+      </div>
+      <div id="twoPlayer">
+        <div id="player0">
+          <div class="lives"></div>
+          <div class="score gameStats"></div>
+        </div>
+        <div id="player1">
+          <div class="lives"></div>
+          <div class="score gameStats"></div>
+        </div>
       </div>
     </div>
     <div class="textContainer" id="menu">
@@ -46,7 +58,9 @@
 
   <script type="text/javascript" src="./assets/js/jsmpeg.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.2.2/pixi.min.js"></script>
-  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/player.js"></script>
+  <script src="assets/js/sounds.js"></script>
+  <script src="assets/js/images.js"></script>
   <script src="assets/js/index.js"></script>
   <script src="assets/js/menu.js"></script>
   <script src="assets/js/gameOver.js"></script>

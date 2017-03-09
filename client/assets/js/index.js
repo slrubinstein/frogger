@@ -1,74 +1,32 @@
-const
-  canvas = document.getElementById('canvas'),
+const canvas = document.getElementById('canvas'),
   game = document.getElementById('game'),
-  currentScore = document.getElementById('currentScore'),
   gameHiScore = document.getElementById('hiScore'),
   finalScore = document.getElementById('finalScore'),
   diff = document.getElementById('diff'),
   body = document.querySelector('body'),
-  gameLives = document.getElementById('gameLives');
+  gameLives = document.getElementById('gameLives'),
+  diffWorker = new Worker('assets/js/diffWorker.js');
 
 const ctx = canvas.getContext('2d'),
   gctx = game.getContext('2d'),
   dctx = diff.getContext('2d');
 
-const frogWidth = 60,
-  frogHeight = 50,
-  w = 1800,
-  h = 850,
-  playableTop = h/8,
-  playableBottom = h*7/8;
+const frogWidth = 60, frogHeight = 50;
+const w = 1800, h = 850;
+const players = [];
 
-const ribbit = new Audio('assets/sounds/frog-ribbet2.wav'),
-  splat = new Audio('assets/sounds/splat.wav'),
-  horn = new Audio('assets/sounds/beep.wav'),
-  startCar = new Audio('assets/sounds/StartCar.wav'),
-  trafficNoise = new Audio('assets/sounds/traffic_noise.m4a'),
-  diffWorker = new Worker('assets/js/diffWorker.js');
-
-const frog = new Image(),
-  fly = new Image(),
-  deadFrog = new Image(),
-  colorThief = new ColorThief();
-
-let frogX, frogY, flyX, flyY, deadFrogX, deadFrogY;
-let color, prevImage, prevFrogX, prevFrogY;
-let lives = 3, score = 0, hiScore = 0, tickNo = 0;
+let color;
 let isGameOver = false;
-let lastTick = Date.now(),
-  startTime = null,
+let startTime = null,
   videoMode = false,
   JSMpegPlayer = null
   video = null;
-
-horn.volume = .5;
-frog.src = 'assets/img/frog.png';
-fly.src = 'assets/img/fly.gif';
-deadFrog.src = 'assets/img/deadFrog.png';
 
 gctx.mozImageSmoothingEnabled = false;
 gctx.webkitImageSmoothingEnabled = false;
 gctx.imageSmoothingEnabled = false;
 
 let keyDownTimer = null;
-trafficNoise.loop = true;
-
-onKeyDown = (e) => {
-  if (e.keyCode > 36 && e.keyCode < 41) {
-    e.preventDefault();
-    if (!keyDownTimer) {
-      keyDownTimer = setTimeout(() => {
-        keyDownTimer = null;
-      }, 100);
-      switch (e.keyCode) {
-        case 38: newFrogPositionY(frogY - frogHeight); break;
-        case 40: newFrogPositionY(frogY + frogHeight); break;
-        case 37: newFrogPositionX(frogX - frogWidth); break;
-        case 39: newFrogPositionX(frogX + frogWidth); break;
-      }
-    }
-  }
-};
 
 startVideo = () => {
   var canvas = document.getElementById('canvas');
@@ -100,14 +58,6 @@ function switchToVideo(src) {
   videoTick();
 }
 
-drawVideoFrame = () => {
-  try {
-    ctx.drawImage(video, 0, 0, w, h);
-  } catch (e) {
-    console.warn('video cannot be drawn to canvas', e);
-  }
-}
-
 function switchToLive() {
   videoMode = false;
   JSMpegPlayer.play();
@@ -119,7 +69,11 @@ function switchToLive() {
 }
 
 videoTick = () => {
-  drawVideoFrame();
+  try {
+    ctx.drawImage(video, 0, 0, w, h);
+  } catch (e) {
+    console.warn('video cannot be drawn to canvas', e);
+  }
 
   if (videoMode) {
     window.requestAnimationFrame(videoTick);
@@ -135,12 +89,15 @@ init = () => {
 
 displayHiScore = () => gameHiScore.innerHTML = hiScore;
 
-startGame = () => {
-  lives = 3;
+startGame = (isTwoPlayer) => {
+  if (isTwoPlayer) {
+    players.push(new Player(38, 40, 37, 39, w/3, h-100, frogHeight, frogWidth));
+    players.push(new Player(87, 83, 65, 68, 2*w/3, h-100, frogHeight, frogWidth));
+  } else {
+    players.push(new Player(38, 40, 37, 39, w/2-frogWidth/2, h-100, frogHeight, frogWidth));
+  }
+
   setLives();
-  setFrogToStartPosition();
-  setFly();
-  document.addEventListener('keydown', onKeyDown);
   if (!isGameOver) tick();
   isGameOver = false;
 
@@ -152,105 +109,59 @@ startGame = () => {
   trafficNoise.play();
 }
 
-setFly = () => {
-  flyX = Math.round(Math.random() * w / frogWidth) * frogWidth + frogWidth/2;
-  flyY = Math.round(Math.random() * ((playableBottom - playableTop) + playableTop) / frogHeight) * frogHeight;
-
-}
-
-setLives = () => {
-  gameLives.innerHTML = '';
-
-  for (let i =0; i < lives; i++) {
-    let img = document.createElement('img');
-    img.src = 'assets/img/frog.png';
-    img.classList.add('life');
-    gameLives.append(img);
-  }
-}
-
 tick = () => {
   if (startTime === null) {
     startTime = Date.now();
   }
 
-  tickNo++;
-  const isSplat = detectCollision();
-  const isDelicious = detectFly();
+  players.forEach(player => player.tick(dctx));
 
-  if (isSplat) {
-    loseLife();
-    splat.play();
-  }
-
-  if (isDelicious) {
-    ribbit.play();
-    setFly();
-    score += 10;
-    setScore();
-  }
-
-  msgDiffWorker();
-
+  setScores();
   drawGame();
-  // console.log('FPS', 1 / ((performance.now() - lastTick) / 1000), tickNo / ((Date.now() - startTime) / 1000) );
-  // console.log(tickNo);
-  lastTick = performance.now();
   window.requestAnimationFrame(tick);
 };
 
-setScore = () => {
-  currentScore.innerHTML = parseInt(score, 10);
-  finalScore.innerHTML = parseInt(score, 10);
+setLives = () => {
+  players.forEach(player => {
+    gameLives.innerHTML = '';
+
+    for (let i =0; i < player.lives; i++) {
+      let img = document.createElement('img');
+      img.src = 'assets/img/frog.png';
+      img.classList.add('life');
+      gameLives.append(img);
+    }
+  });
+}
+
+setScores = () => {
+  players.forEach((player, i) => {
+    let scoreElement = players.length > 1 ? `#player${i} .score` : `#gameScore`;
+    scoreElement = document.querySelector(scoreElement);
+    setScore(player.score, scoreElement, finalScore)
+  });
+}
+
+setScore = (score, scoreElement, finalElement) => {
+  scoreElement.innerHTML = parseInt(score, 10);
+  finalElement.innerHTML = parseInt(score, 10);
   hiScore = Math.max(hiScore, parseInt(score, 10));
   gameHiScore.innerHTML = hiScore;
 }
 
-setFrogToStartPosition = () => {
-  frogX = w/2 - frogWidth/2;
-  frogY = h - frogHeight;
-}
+// loseLife = () => {
+//   deadFrogX = frogX;
+//   deadFrogY = frogY;
 
-loseLife = () => {
-  lives--;
+//   frog.src = '';
 
-  setLives();
-  setScore();
-  deadFrogX = frogX;
-  deadFrogY = frogY;
-
-  if (lives <= 0) {
-    gameOver();
-    return;
-  }
-
-  frog.src = '';
-
-  setTimeout(() => {
-    frog.src = 'assets/img/frog.png';
-    deadFrogX = null;
-    deadFrogY = null;
-  }, 500);
-  setFrogToStartPosition();
-}
-
-msgDiffWorker = () => {
-  if (prevFrogX && prevFrogY && prevImage) {
-    const currentImage = ctx.getImageData(prevFrogX - 100, prevFrogY - 100, 200 + frogWidth, 200 + frogHeight).data;
-    diffWorker.postMessage({
-      'img1data': currentImage,
-      'img2data': prevImage,
-      'diff': ctx.createImageData(200+frogWidth, 200+frogHeight).data,
-      'width': 200+frogWidth,
-      'height': 200+frogWidth,
-      'prevX': prevFrogX,
-      'prevY': prevFrogY
-    });
-  }
-  prevFrogX = frogX;
-  prevFrogY = frogY;
-  prevImage = ctx.getImageData(frogX - 100, frogY - 100, 200+frogWidth, 200 + frogHeight).data;
-};
+//   setTimeout(() => {
+//     frog.src = 'assets/img/frog.png';
+//     deadFrogX = null;
+//     deadFrogY = null;
+//   }, 500);
+//   setFrogToStartPosition();
+// }
 
 onDiffMessage = ({ data }) => {
   const imageData = new ImageData(data.diff, 200+frogWidth, 200+frogHeight);
@@ -267,9 +178,11 @@ drawGame = () => {
     gctx.fillRect(40,0,40,40);
   }
 
-  gctx.drawImage(frog, frogX, frogY, frogWidth, frogHeight)
-  gctx.drawImage(deadFrog, deadFrogX, deadFrogY, frogWidth, frogHeight)
-  gctx.drawImage(fly, flyX, flyY, frogWidth, frogHeight)
+  players.forEach(player => {
+    gctx.drawImage(frog, player.posX, player.posY, frogWidth, frogHeight);
+    // gctx.drawImage(deadFrog, deadFrogX, deadFrogY, frogWidth, frogHeight);
+    gctx.drawImage(fly, player.flyX, player.flyY, frogWidth, frogHeight);
+  });
 };
 
 diffWorker.addEventListener('message', onDiffMessage);

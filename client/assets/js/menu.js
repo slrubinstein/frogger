@@ -1,7 +1,5 @@
 const menuElement = document.getElementById('menu');
 const levelContainer = document.getElementById('levels');
-const beep = new Audio('assets/sounds/beep2.mp3');
-beep.volume = .5;
 let activeLevel = 0;
 
 levels = [
@@ -53,7 +51,7 @@ showInstructions = (e) => {
   setTimeout(() => {
     startCar.play();
     instructions.style.display = 'none';
-    startGame();
+    startGame(true);
   }, 2500)
   levelContainer.innerHTML = '';
 }
