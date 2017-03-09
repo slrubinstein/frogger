@@ -130,6 +130,7 @@ img, #game {
 
 #gameOver {
   display: none;
+  justify-content: flex-start;
 }
 
 #instructions {
@@ -150,7 +151,7 @@ img, #game {
 }
 
 #hiScoresScreen {
-  // display: none;
+  display: none;
   justify-content: flex-start;
 }
 
@@ -160,4 +161,25 @@ img, #game {
 
 .dbHiScore {
   float: right;
+}
+
+#restart {
+  display: none;
+  position: absolute;
+  bottom: 0;
+}
+
+#cursor {
+  display: inline-block;
+  content: '';
+  height: 28px;
+  width: 30px;
+  background-color: red;
+  margin-left: -32px;
+  margin-bottom: 4px;
+}
+
+#enterHiScore {
+  display: none;
+  text-align: center;
 }
