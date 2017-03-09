@@ -167,7 +167,7 @@ drawGame = () => {
 
   players.forEach((player, i) => {
     gctx.drawImage(frogs[i], player.posX, player.posY, frogWidth, frogHeight);
-    gctx.drawImage(deadFrog, player.deadX, player.deadY, frogWidth, frogHeight);
+    gctx.drawImage(deadFrogs[i], player.deadX, player.deadY, frogWidth, frogHeight);
   });
   gctx.drawImage(flyImg, fly.x, fly.y, frogWidth, frogHeight);
 };
