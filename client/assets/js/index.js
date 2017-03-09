@@ -152,7 +152,7 @@ class Game {
 
     this.players.forEach((player, i) => {
       gctx.drawImage(frogs[i], player.posX, player.posY, this.frogWidth, this.frogHeight);
-      gctx.drawImage(deadFrog, player.deadX, player.deadY, this.frogWidth, this.frogHeight);
+      gctx.drawImage(deadFrogs[i], player.deadX, player.deadY, this.frogWidth, this.frogHeight);
     });
     gctx.drawImage(flyImg, this.fly.x, this.fly.y, this.frogWidth, this.frogHeight);
   }
