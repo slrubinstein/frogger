@@ -183,3 +183,23 @@ img, #game {
   display: none;
   text-align: center;
 }
+
+#chooseNumberPlayers {
+  display: none;
+}
+
+.numberPlayers {
+  position: relative;
+}
+
+.numberPlayers.first {
+  right: 46px;
+}
+
+.numberPlayers.active .arrow {
+  top: 0;
+}
+
+.numberFrogsImage {
+  height: 60px;
+}
