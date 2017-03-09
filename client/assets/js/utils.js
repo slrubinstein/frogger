@@ -8,7 +8,7 @@ detectCollision = () => {
   for (let i=0; i<data.length; i+=8) {
     sum+=data[i];
   }
-  return sum > 1000;
+  return sum > 500;
 }
 
 detectFly = () => {

@@ -17,7 +17,7 @@ const frogWidth = 60,
   w = 1800,
   h = 850,
   playableTop = h/8,
-  playableBottom = h/4*3;
+  playableBottom = h*7/8;
 
 const ribbit = new Audio('assets/sounds/frog-ribbet2.wav'),
   splat = new Audio('assets/sounds/splat.wav'),
