@@ -9,10 +9,13 @@ class Fly {
   }
 
   getNewX() {
-    return Math.round(Math.random() * 500); //TODO
+    const usableColumns = Math.floor(canvasWidth / frogWidth) - 2;
+
+    return (Math.floor(Math.random() * usableColumns) + 1.5 ) * frogWidth; //TODO
   }
 
   getNewY() {
-    return Math.round(Math.random() * 500); //TODO
+    const usableRows = Math.floor(canvasHeight / frogHeight) - 2;
+    return (Math.floor(Math.random() * usableRows + 1.5 ) * frogHeight); //TODO
   }
 }
