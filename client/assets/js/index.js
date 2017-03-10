@@ -29,12 +29,12 @@ class Game {
 
     if (isTwoPlayer) {
       this.players = [
-        new Player(87, 83, 65, 68, w/3, h-100, this.frogHeight, this.frogWidth, this),
-        new Player(38, 40, 37, 39, 2*w/3, h-100, this.frogHeight, this.frogWidth, this)
+        new Player(87, 83, 65, 68, w/3, h-100, this.frogHeight, this.frogWidth, this, 0),
+        new Player(38, 40, 37, 39, 2*w/3, h-100, this.frogHeight, this.frogWidth, this, 1)
       ];
     } else {
       this.players = [
-        new Player(38, 40, 37, 39, w/2-this.frogWidth/2, h-100, this.frogHeight, this.frogWidth, this)
+        new Player(38, 40, 37, 39, w/2-this.frogWidth/2, h-100, this.frogHeight, this.frogWidth, this, 0)
       ];
     }
 
@@ -42,7 +42,7 @@ class Game {
     this.isGameOver = false;
 
     this.tick();
-    this.paintLives();
+    this.players.forEach(this.paintLives, this);
 
     this.videoManager.restartVideo();
 
@@ -56,18 +56,17 @@ class Game {
     window.requestAnimationFrame(this.tick.bind(this));
   };
 
-  paintLives() {
-    this.players.forEach(player => {
-      gameLives.innerHTML = '';
+  paintLives(player) {
+    const livesElement = document.querySelector(
+        this.isTwoPlayer ? `#player${player.frogNum} .lives` : `#gameLives`);
+    livesElement.innerHTML = '';
 
-      for (let i =0; i < player.lives; i++) {
-        let img = document.createElement('img');
-        img.src = 'assets/img/frog0.png';
-        img.classList.add('life');
-        gameLives.append(img);
-      }
-
-    });
+    for (let j =0; j < player.lives; j++) {
+      let img = document.createElement('img');
+      img.src = `assets/img/frog${player.frogNum}.png`;
+      img.classList.add('life');
+      livesElement.append(img);
+    }
   }
 
   setScores() {
@@ -80,7 +79,9 @@ class Game {
 
   paintScore(score, scoreElement, finalElement) {
     scoreElement.innerHTML = parseInt(score, 10);
-    finalElement.innerHTML = parseInt(score, 10);
+    const finalScore = this.isTwoPlayer ?
+      Math.max(this.players[0].score, this.players[1].score) : this.players[0].score;
+    finalElement.innerHTML = finalScore;
     this.hiScore = Math.max(this.hiScore, parseInt(score, 10), 0);
     gameHiScore.innerHTML = this.hiScore;
   }
@@ -91,31 +92,29 @@ class Game {
     gctx.clearRect(0,0,w,h);
 
     this.players.forEach((player, i) => {
-      gctx.drawImage(frogs[i], player.posX, player.posY, this.frogWidth, this.frogHeight);
-      gctx.drawImage(deadFrogs[i], player.deadX, player.deadY, this.frogWidth, this.frogHeight);
+      gctx.drawImage(frogs[player.frogNum], player.posX, player.posY, this.frogWidth, this.frogHeight);
+      gctx.drawImage(deadFrogs[player.frogNum], player.deadX, player.deadY, this.frogWidth, this.frogHeight);
     });
     gctx.drawImage(flyImg, this.fly.x, this.fly.y, this.frogWidth, this.frogHeight);
   }
 
   setLives() {
+    const deadPlayers = [];
     this.players.forEach((player, i) => {
-      const livesElement = document.querySelector(
-        this.isTwoPlayer ? `#player${i} .lives` : `#gameLives`);
-      livesElement.innerHTML = '';
-
-      for (let j =0; j < player.lives; j++) {
-        let img = document.createElement('img');
-        img.src = `assets/img/frog${i}.png`;
-        img.classList.add('life');
-        livesElement.append(img);
-      }
+      this.paintLives(player);
 
       if (player.lives <= 0) {
-        gameOver(player);
-        this.players = [];
-        this.isGameOver = true;
+        deadPlayers.push(player);
       }
     });
+
+    if (this.isTwoPlayer && deadPlayers.length === 2) {
+      this.isGameOver = true;
+      gameOver();
+    } else if (!this.isTwoPlayer && deadPlayers.length) {
+      this.isGameOver = true;
+      gameOver(this.players[0].score);
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 const canvasHeight = 850, canvasWidth = 1800;
 
 class Player {
-  constructor(up, down, left, right, startingX, startingY, height, width, game) {
+  constructor(up, down, left, right, startingX, startingY, height, width, game, frogNum) {
     this.up = up, this.down = down, this.left = left, this.right = right;
     this.game = game;
     this.height = height;
@@ -10,6 +10,7 @@ class Player {
     this.posX = this.startingX = startingX;
     this.posY = this.startingY = startingY;
     this.deadX = this.deadY = null;
+    this.frogNum = frogNum;
 
     this.lives = 3;
     this.score = 0;
@@ -121,10 +122,12 @@ class Player {
     this.game.setLives();
 
     setTimeout(() => {
-      this.deadX = this.deadY = null
-      this.posX = this.startingX;
-      this.posY = this.startingY;
-      this.setTempInvincibility();
+      if (this.lives) {
+        this.deadX = this.deadY = null
+        this.posX = this.startingX;
+        this.posY = this.startingY;
+        this.setTempInvincibility();
+      }
     }, 500)
   }
 

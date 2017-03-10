@@ -14,14 +14,14 @@ let name = '';
 
 const MAX_SCORES_LENGTH = 5;
 
-gameOver = (player) => {
+gameOver = (score) => {
   trafficNoise.pause();
   gameOverScreen.style.display = 'flex';
   sadNoiseSignalingTheEndOfTheGame.play();
 
-  if (!hiScores.length || hiScores.length < MAX_SCORES_LENGTH || player.score > hiScores.slice(-1)[0].score) {
+  if (!hiScores.length || hiScores.length < MAX_SCORES_LENGTH || score > hiScores.slice(-1)[0].score) {
     setTimeout(() => {
-      enterNewHiScore(player);
+      if (score) enterNewHiScore(score);
     }, 500);
     return;
   }
@@ -33,15 +33,15 @@ gameOver = (player) => {
 // gross!
 let boundNameListener;
 
-enterNewHiScore = (player) => {
+enterNewHiScore = (score) => {
   cursor.style.display = 'inline-block';
   enterHiScore.style.display = 'block';
 
-  boundNameListener = nameListener.bind(null, player);
+  boundNameListener = nameListener.bind(null, score);
   document.addEventListener('keyup', boundNameListener);
 }
 
-nameListener = (player, e) => {
+nameListener = (score, e) => {
   if (e.keyCode === 13) {
     saveHiScore();
   }
@@ -51,14 +51,14 @@ nameListener = (player, e) => {
   enterName.innerHTML = name;
 
   if (name.length === 3) {
-    saveHiScore(player);
+    saveHiScore(score);
   }
 }
 
-saveHiScore = (player) => {
+saveHiScore = (score) => {
   enterHiScore.style.display = 'none';
   document.removeEventListener('keyup', boundNameListener);
-  sendHiScoreToDB(player);
+  sendHiScoreToDB(score);
   restart.style.display = 'block';
   document.addEventListener('keyup', onKeyUpRestart);
   cursor.style.display = 'none';
@@ -72,8 +72,8 @@ onKeyUpRestart = (e) => {
   }
 }
 
-sendHiScoreToDB = (player) => {
-  dbRef.push().set({ name, score: player.score });
+sendHiScoreToDB = (score) => {
+  dbRef.push().set({ name, score });
   name = '';
   enterName.innerHTML = '';
 }
