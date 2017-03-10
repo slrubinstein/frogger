@@ -122,10 +122,12 @@ class Player {
     this.game.setLives();
 
     setTimeout(() => {
-      this.deadX = this.deadY = null
-      this.posX = this.startingX;
-      this.posY = this.startingY;
-      this.setTempInvincibility();
+      if (this.lives) {
+        this.deadX = this.deadY = null
+        this.posX = this.startingX;
+        this.posY = this.startingY;
+        this.setTempInvincibility();
+      }
     }, 500)
   }
 

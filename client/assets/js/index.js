@@ -79,7 +79,9 @@ class Game {
 
   paintScore(score, scoreElement, finalElement) {
     scoreElement.innerHTML = parseInt(score, 10);
-    finalElement.innerHTML = parseInt(score, 10);
+    const finalScore = this.isTwoPlayer ?
+      Math.max(this.players[0].score, this.players[1].score) : this.players[0].score;
+    finalElement.innerHTML = finalScore;
     this.hiScore = Math.max(this.hiScore, parseInt(score, 10), 0);
     gameHiScore.innerHTML = this.hiScore;
   }
@@ -97,15 +99,22 @@ class Game {
   }
 
   setLives() {
+    const deadPlayers = [];
     this.players.forEach((player, i) => {
       this.paintLives(player);
 
       if (player.lives <= 0) {
-        this.players.splice(i, 1);
-        gameOver(player, this);
-        this.isGameOver = true;
+        deadPlayers.push(player);
       }
     });
+
+    if (this.isTwoPlayer && deadPlayers.length === 2) {
+      this.isGameOver = true;
+      gameOver();
+    } else if (!this.isTwoPlayer && deadPlayers.length) {
+      this.isGameOver = true;
+      gameOver(this.players[0].score);
+    }
   }
 }
 
