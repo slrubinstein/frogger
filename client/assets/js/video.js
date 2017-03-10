@@ -13,6 +13,7 @@ class VideoManager {
 
     this.video = null;
     this.videoMode = false;
+    this.switchToVideo('./assets/vid/afternoon.mp4');
   }
 
   restartVideo() {
