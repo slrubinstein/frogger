@@ -1,4 +1,5 @@
 body {
+  text-shadow: 2px 3px black;
   font-family: 'Press Start 2P', cursive;
   font-smooth: never;
   -webkit-font-smoothing : none;
