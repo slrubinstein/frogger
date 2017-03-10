@@ -27,7 +27,9 @@ class Player {
 
   setTempInvincibility() {
     this.colDetect = false;
-    setTimeout(() => this.colDetect = true, 1000);
+    setTimeout(() => {
+      this.colDetect = true;
+    }, 2000);
   }
 
   destructor() {
