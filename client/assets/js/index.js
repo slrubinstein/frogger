@@ -29,8 +29,8 @@ class Game {
 
     if (isTwoPlayer) {
       this.players = [
-        new Player(38, 40, 37, 39, w/3, h-100, this.frogHeight, this.frogWidth, this),
-        new Player(87, 83, 65, 68, 2*w/3, h-100, this.frogHeight, this.frogWidth, this)
+        new Player(87, 83, 65, 68, w/3, h-100, this.frogHeight, this.frogWidth, this),
+        new Player(38, 40, 37, 39, 2*w/3, h-100, this.frogHeight, this.frogWidth, this)
       ];
     } else {
       this.players = [
@@ -41,8 +41,8 @@ class Game {
     this.fly = new Fly(this.frogWidth, this.frogHeight);
     this.isGameOver = false;
 
-    this.paintLives();
     this.tick();
+    this.paintLives();
 
     this.videoManager.restartVideo();
 
@@ -51,8 +51,8 @@ class Game {
 
   tick() {
     this.players.forEach(player => player.tick(this.fly));
-    this.setScores();
     this.drawGame();
+    this.setScores();
     window.requestAnimationFrame(this.tick.bind(this));
   };
 

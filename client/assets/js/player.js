@@ -114,11 +114,11 @@ class Player {
 
   loseLife() {
     this.lives--;
-    this.game.setLives();
 
     this.deadX = this.posX;
     this.deadY = this.posY;
     this.posX = this.posY = null;
+    this.game.setLives();
 
     setTimeout(() => {
       this.deadX = this.deadY = null
