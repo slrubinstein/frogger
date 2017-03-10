@@ -6,9 +6,9 @@ const singlePlayer = document.getElementById('singlePlayer');
 const twoPlayer = document.getElementById('twoPlayer');
 
 levels = [
-  {img: 'level0.svg', name: 'Live', src: 'live'},
+  {img: 'level0.svg', name: 'Live', src: './assets/vid/afternoon.mp4'},
   {img: 'cloud.png', name: 'Morning', src: './assets/vid/level3.mp4'},
-  {img: 'sun.png', name: 'Afternoon', src: './assets/vid/afternoon.mp4'},
+  {img: 'sun.png', name: 'Afternoon', src: './assets/vid/510pm.mp4'},
   {img: 'moon.png', name: 'Night', src: './assets/vid/night.mp4'},
 ];
 
