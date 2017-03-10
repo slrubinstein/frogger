@@ -116,6 +116,7 @@ class Game {
 
       if (player.lives <= 0) {
         gameOver();
+        this.players = [];
         this.isGameOver = true;
       }
     });

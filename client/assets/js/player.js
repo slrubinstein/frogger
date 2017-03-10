@@ -15,9 +15,18 @@ class Player {
     this.score = 0;
     this.keyDownTimer = {};
 
+    this.colDetect = true;
+    setTimeout(() => this.colDetect = true, 1000);
+
     this.diffWorker = new Worker('assets/js/diffWorker.js');
     this.diffWorker.addEventListener('message', this.onDiffMessage.bind(this));
     document.addEventListener('keydown', this.onKeyDown.bind(this));
+    this.setTempInvincibility();
+  }
+
+  setTempInvincibility() {
+    this.colDetect = false;
+    setTimeout(() => this.colDetect = true, 1000);
   }
 
   destructor() {
@@ -123,6 +132,7 @@ class Player {
       this.deadX = this.deadY = null
       this.posX = this.startingX;
       this.posY = this.startingY;
+      this.setTempInvincibility();
     }, 500)
   }
 
@@ -149,7 +159,7 @@ class Player {
 
   tick(fly) {
     this.msgDiffWorker();
-    if (this.detectCollision()) {
+    if (this.colDetect && this.detectCollision()) {
       this.loseLife();
       splat.play();
     }
