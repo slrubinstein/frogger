@@ -97,14 +97,6 @@ class Player {
     }
   }
 
-  getFlyX() {
-    return Math.round(Math.random() * 500); //TODO
-  }
-
-  getFlyY() {
-    return Math.round(Math.random() * 500); //TODO
-  }
-
   detectCollision() {
     const data = dctx.getImageData(this.posX, this.posY, this.width, this.height).data;
 

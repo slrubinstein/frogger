@@ -1,8 +1,8 @@
 class Fly {
   constructor(flyWidth, flyHeight) {
-    this.move();
     this.flyWidth = flyWidth;
     this.flyHeight = flyHeight;
+    this.move();
   }
 
   move() {

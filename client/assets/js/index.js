@@ -37,7 +37,7 @@ class Game {
       ];
     }
 
-    this.fly = new Fly();
+    this.fly = new Fly(this.frogWidth, this.frogHeight);
     this.isGameOver = false;
 
     this.paintLives();
