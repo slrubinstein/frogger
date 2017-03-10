@@ -11,7 +11,7 @@ class Player {
     this.posY = this.startingY = startingY;
     this.deadX = this.deadY = null;
 
-    this.lives = 1;
+    this.lives = 3;
     this.score = 0;
     this.keyDownTimer = {};
 
