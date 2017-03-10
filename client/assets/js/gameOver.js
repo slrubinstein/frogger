@@ -8,19 +8,21 @@ const cursor = document.getElementById('cursor');
 const enterName = document.getElementById('enterName');
 
 const dbRef = firebase.database().ref().child('dbHiScores');
-
 const hiScores = [];
+
 let name = '';
 
 const MAX_SCORES_LENGTH = 5;
 
-gameOver = (score) => {
+gameOver = (player) => {
   trafficNoise.pause();
   gameOverScreen.style.display = 'flex';
   sadNoiseSignalingTheEndOfTheGame.play();
 
-  if (!hiScores.length || hiScores.length < MAX_SCORES_LENGTH || score > hiScores.slice(-1)[0].score) {
-    setTimeout(enterNewHiScore, 500);
+  if (!hiScores.length || hiScores.length < MAX_SCORES_LENGTH || player.score > hiScores.slice(-1)[0].score) {
+    setTimeout(() => {
+      enterNewHiScore(player);
+    }, 500);
     return;
   }
 
@@ -28,13 +30,18 @@ gameOver = (score) => {
   document.addEventListener('keyup', onKeyUpRestart);
 }
 
-enterNewHiScore = () => {
+// gross!
+let boundNameListener;
+
+enterNewHiScore = (player) => {
   cursor.style.display = 'inline-block';
   enterHiScore.style.display = 'block';
-  document.addEventListener('keyup', nameListener);
+
+  boundNameListener = nameListener.bind(null, player);
+  document.addEventListener('keyup', boundNameListener);
 }
 
-nameListener = (e) => {
+nameListener = (player, e) => {
   if (e.keyCode === 13) {
     saveHiScore();
   }
@@ -44,14 +51,14 @@ nameListener = (e) => {
   enterName.innerHTML = name;
 
   if (name.length === 3) {
-    saveHiScore();
+    saveHiScore(player);
   }
 }
 
-saveHiScore = () => {
+saveHiScore = (player) => {
   enterHiScore.style.display = 'none';
-  document.removeEventListener('keyup', nameListener);
-  sendHiScoreToDB();
+  document.removeEventListener('keyup', boundNameListener);
+  sendHiScoreToDB(player);
   restart.style.display = 'block';
   document.addEventListener('keyup', onKeyUpRestart);
   cursor.style.display = 'none';
@@ -65,8 +72,8 @@ onKeyUpRestart = (e) => {
   }
 }
 
-sendHiScoreToDB = () => {
-  dbRef.push().set({ name, score });
+sendHiScoreToDB = (player) => {
+  dbRef.push().set({ name, score: player.score });
   name = '';
   enterName.innerHTML = '';
 }
@@ -83,16 +90,18 @@ createScore = ({ name, score }) => {
   dbHiScores.append(container);
 }
 
-dbRef.orderByChild('score').limitToLast(MAX_SCORES_LENGTH).on('value', (snap) => {
-  hiScores.length = 0;
-  snap.forEach((d) => {
-    let val = d.val();
-    hiScores.push({ name: val.name, score: val.score });
+setUpDBListener = (game) => {
+  dbRef.orderByChild('score').limitToLast(MAX_SCORES_LENGTH).on('value', (snap) => {
+    hiScores.length = 0;
+    snap.forEach((d) => {
+      let val = d.val();
+      hiScores.push({ name: val.name, score: val.score });
+    });
+    dbHiScores.innerHTML = '';
+    hiScores.reverse().forEach(createScore);
+    if (hiScores[0]) {
+      game.hiScore = hiScores[0].score;
+      game.displayHiScore();
+    }
   });
-  dbHiScores.innerHTML = '';
-  hiScores.reverse().forEach(createScore);
-  if (hiScores[0]) {
-    hiScore = hiScores[0].score;
-    gameHiScore.innerHTML = 0;
-  }
-});
+}

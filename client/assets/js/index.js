@@ -21,6 +21,7 @@ class Game {
     this.isGameOver = false;
     this.frogWidth = 60;
     this.frogHeight = 50;
+    setUpDBListener(this);
   }
 
   startGame(isTwoPlayer) {
@@ -66,18 +67,13 @@ class Game {
         gameLives.append(img);
       }
 
-      if (player.lives <= 0) {
-        this.isGameOver = true;
-        this.players = [];
-        gameOver(this.isTwoPlayer && this.score);
-      }
     });
   }
 
   setScores() {
     this.players.forEach((player, i) => {
       const scoreElement = document.querySelector(
-        this.isTwoPlayer ? `#player${i} .score` : `#gameScore`);
+        this.isTwoPlayer ? `#player${i} .score` : `#gameScore #currentScore`);
       this.paintScore(player.score, scoreElement, finalScore)
     });
   }
@@ -85,7 +81,7 @@ class Game {
   paintScore(score, scoreElement, finalElement) {
     scoreElement.innerHTML = parseInt(score, 10);
     finalElement.innerHTML = parseInt(score, 10);
-    this.hiScore = Math.max(this.hiScore, parseInt(this.score, 10));
+    this.hiScore = Math.max(this.hiScore, parseInt(score, 10), 0);
     gameHiScore.innerHTML = this.hiScore;
   }
 
@@ -115,7 +111,7 @@ class Game {
       }
 
       if (player.lives <= 0) {
-        gameOver();
+        gameOver(player);
         this.players = [];
         this.isGameOver = true;
       }
