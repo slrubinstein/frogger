@@ -28,8 +28,8 @@ class Game {
 
     if (isTwoPlayer) {
       this.players = [
-        new Player(38, 40, 37, 39, 2*w/3, h-100, this.frogHeight, this.frogWidth, this),
-        new Player(87, 83, 65, 68, w/3, h-100, this.frogHeight, this.frogWidth, this)
+        new Player(38, 40, 37, 39, w/3, h-100, this.frogHeight, this.frogWidth, this),
+        new Player(87, 83, 65, 68, 2*w/3, h-100, this.frogHeight, this.frogWidth, this)
       ];
     } else {
       this.players = [
