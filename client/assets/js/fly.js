@@ -17,7 +17,7 @@ class Fly {
   }
 
   getNewY() {
-    const usableRows = Math.floor(canvasHeight / this.flyHeight) - 2;
-    return (Math.floor(Math.random() * usableRows + 1.5 ) * this.flyHeight); //TODO
+    const usableRows = Math.floor(canvasHeight / this.flyHeight) - 3;
+    return (Math.floor(Math.random() * usableRows + 2 ) * this.flyHeight); //TODO
   }
 }
