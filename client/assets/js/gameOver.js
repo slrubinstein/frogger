@@ -14,12 +14,16 @@ let name = '';
 
 const MAX_SCORES_LENGTH = 5;
 
-gameOver = (player) => {
+gameOver = (player, game) => {
+
+  if (game.isTwoPlayer && game.players.length) {
+    return;
+  }
   trafficNoise.pause();
   gameOverScreen.style.display = 'flex';
   sadNoiseSignalingTheEndOfTheGame.play();
 
-  if (!hiScores.length || hiScores.length < MAX_SCORES_LENGTH || player.score > hiScores.slice(-1)[0].score) {
+  if (!game.isTwoPlayer && !hiScores.length || hiScores.length < MAX_SCORES_LENGTH || player.score > hiScores.slice(-1)[0].score) {
     setTimeout(() => {
       enterNewHiScore(player);
     }, 500);
